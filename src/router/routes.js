@@ -2,16 +2,23 @@ import Dashboard from '../views/Dashboard.vue'
 export const routes= [
     {
         path: '',
-        redirect:'/dashboard' 
+        redirect:{
+            name:'Dashboard'
+        } 
     },
     {
          path: '/dashboard', 
          name:'Dashboard',
          component: Dashboard,
+         redirect:{
+            name:'Home'
+         },
          children:[
             {
                 path:'',
-                redirect:'/dashboard/home'
+                redirect:{
+                    name:'Home'
+                }
             },
             {
                 path:'home',
