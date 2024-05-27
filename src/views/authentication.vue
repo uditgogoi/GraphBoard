@@ -3,3 +3,5 @@
         authentication
     </div>
 </template>
+<script>
+</script>
