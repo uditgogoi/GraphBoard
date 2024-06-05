@@ -9,7 +9,7 @@ export const LeftNavigationMenu=[
     },
     {
         id:'create',
-        title:'Create Dashboard',
+        title:'Create 2D Dashboard',
         route:'/dashboard/create',
         icon: PieChart
     },
