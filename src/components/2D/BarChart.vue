@@ -1,10 +1,6 @@
 <template>
   <div>
-    this is bar chart
-    <BaseChart
-        :chartOptions="chartOptions"
-        :data="data"
-    />
+    <BaseChart :chartOptions="chartOptions" :data="data" />
   </div>
 </template>
 <script setup>
@@ -26,3 +22,9 @@ const data = ref([
   },
 ]);
 </script>
+<style scoped>
+.barchart-wrapper {
+  border: none !important;
+}
+
+</style>

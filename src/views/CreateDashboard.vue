@@ -46,7 +46,7 @@ const addGraph = (type) => {
     type: "graph",
     section: type,
     w: 300,
-    h: 200,
+    h: 280,
   };
   components.value.push(component);
   console.log(components.value);
