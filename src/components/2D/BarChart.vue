@@ -6,21 +6,21 @@
 <script setup>
 import { ref } from "vue";
 import BaseChart from "./BaseChart.vue";
-const chartOptions = ref({
-  chart: {
-    id: "vuechart-example",
-  },
-  xaxis: {
-    categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
-  },
-});
 
-const data = ref([
-  {
-    name: "series-1",
-    data: [30, 40, 35, 50, 49, 60, 70, 91],
-  },
-]);
+const props=defineProps(['graphData'])
+
+const chartOptions= ref(props.graphData.options);
+const data = ref(props.graphData.series);
+
+// console.log(data.value)
+console.log(data.value)
+
+// [
+//   {
+//     name: "series-1",
+//     data: [30, 40, 35, 50, 49, 60, 70, 91],
+//   },
+// ]
 </script>
 <style scoped>
 .barchart-wrapper {
