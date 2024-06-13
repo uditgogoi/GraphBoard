@@ -16,7 +16,7 @@
       @resize-start="print('resize-start')"
       @dragging="print('dragging')"
       @resizing="print('resizing')"
-      @drag-end="print('drag-end')"
+      @drag-end="onDragEnd"
       @resize-end="print('resize-end')"
       classNameHandle="my-handle"
     >
@@ -30,7 +30,9 @@
               </span>
               <template #dropdown>
                 <el-dropdown-menu @select="onSelectMenu">
-                  <el-dropdown-item command="populate">Populate Data</el-dropdown-item>
+                  <el-dropdown-item command="populate"
+                    >Populate Data</el-dropdown-item
+                  >
                   <el-dropdown-item command="edit">Edit Style</el-dropdown-item>
                   <el-dropdown-item command="remove">Remove</el-dropdown-item>
                 </el-dropdown-menu>
@@ -39,10 +41,19 @@
           </div>
         </template>
 
-        <component :is="getComponentName" :graphData="chartData" v-if="graphDataLoaded"></component
-      ></el-card>
+        <component
+          :key="props.component.id"
+          :is="getComponentName"
+          v-if="graphDataLoaded"
+          :id="props.component.id"
+        ></component>
+      </el-card>
     </Vue3DraggableResizable>
-    <PopulateBarData v-if="showAddNewData" @close="onClose" :data="populateDataProp" @change="onChangeGraphData"/>
+    <PopulateBarData
+      v-if="showAddNewData"
+      @close="onClose"
+      :id="props.component.id"
+    />
   </div>
 </template>
 <script setup>
@@ -50,55 +61,51 @@ import { computed, onMounted, ref } from "vue";
 import BarChart from "./2D/BarChart.vue";
 import AreaChart from "./2D/AreaChart.vue";
 import PopulateBarData from "./modal/populateBarData.vue";
-import {defaultBarChartValues} from '../Model/BarChart';
-const props = defineProps(["component"]);
+import { defaultBarChartValues } from "../Model/Charts";
+import { useGraphStore } from "../store";
 
-const showAddNewData= ref(false);
-const graphDataLoaded= ref(false);
-const chartData=ref({});
+const props = defineProps(["component"]);
+const store= useGraphStore();
+const dashboardList= computed(()=> store.getDashboardItemList);
+const showAddNewData = ref(false);
+const graphDataLoaded = ref(false);
 const xValue = ref(100);
 const yValue = ref(112);
-const populateDataProp= ref({});
-const cardTitle= ref('Car Name')
+const cardTitle = computed(()=> dashboardList.value.find(item=> item.id=== props.component.id).title);
 const print = (val) => {
-  console.log(val);
+  // console.log(val);
 };
 
-onMounted(()=> {
+onMounted(() => {
   fetchGraphData();
-})
+});
 
-const fetchGraphData=async()=> {
-  if(props.component.name=== 'BarChart') {
-    chartData.value= defaultBarChartValues;
-    
+const fetchGraphData = async () => {
+  if (props.component.name === "BarChart") {
+    const componentItemDataList= dashboardList.value;
+    for(let i=0; i< componentItemDataList.length; i++) {
+      if(componentItemDataList[i].id=== props.component.id) {
+        componentItemDataList[i].itemData= JSON.parse(JSON.stringify(defaultBarChartValues));
+      }
+    }
+    store.setNewDashboardItems(componentItemDataList);
   }
   graphDataLoaded.value=true;
-}
+};
 
 const handleCommand = (e) => {
-  console.log(e);
-  if(e==='populate') {
-    showAddNewData.value=true;
-    populateDataProp.value=constructGraphData();
-  }
-  else if(e==='edit') {
-
+  if (e === "populate") {
+    showAddNewData.value = true;
+  } else if (e === "edit") {
   } else {
-
+    const componentList= store.getDashboardItemList.filter(item=> item.id!= props.component.id);
+    store.setNewDashboardItems(componentList);
   }
 };
 
-const constructGraphData=()=> {
-  return {
-    title: cardTitle.value,
-    chart: chartData.value
-  }
-}
-
-const onClose=()=> {
-  showAddNewData.value=false;
-}
+const onClose = () => {
+  showAddNewData.value = false;
+};
 
 const getComponentName = computed(() => {
   let component = BarChart;
@@ -110,14 +117,11 @@ const getComponentName = computed(() => {
   return component;
 });
 
-const onChangeGraphData= (props)=> {
-  graphDataLoaded.value=false;
-  cardTitle.value= props.title;
-  chartData.value.series= props.chart.series?.length? props.chart.series:  chartData.value.series;
-  console.log(props)
-  graphDataLoaded.value=true;
-  onClose();
-}
+
+
+const onDragEnd = (obj, id) => {
+  // console.log(obj, id);
+};
 </script>
 <style scoped>
 .component-wrapper {

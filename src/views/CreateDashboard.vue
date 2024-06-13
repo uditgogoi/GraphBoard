@@ -24,32 +24,31 @@
       <!-- <el-menu-item index="4">Orders</el-menu-item> -->
     </el-menu>
     <div class="content">
-      <Playground :components="components"/>
+      <Playground/>
     </div>
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import Playground from "../components/Playground.vue";
 import {uniqueID} from "../utils/helper";
+import {Item} from "../Model/Item";
+import {useGraphStore} from "../store";
 
-const components=ref([]);
-
+const components=computed(()=> store.getDashboardItemList);
+const store= useGraphStore();
 const handleSelect = (e) => {
   addGraph(e);
 };
 
 const addGraph = (type) => {
-  const component = {
-    id: uniqueID(),
-    name: getGraphComponent(type),
-    type: "graph",
-    section: type,
-    w: 300,
-    h: 280,
-  };
-  components.value.push(component);
-  console.log(components.value);
+  const newComponent= JSON.parse(JSON.stringify(Item))
+  newComponent.id= uniqueID();
+  newComponent.title= getGraphComponent(type);
+  newComponent.name=getGraphComponent(type);
+  newComponent.section=type;
+  newComponent.type='graph';
+  store.setNewDashboardItems([...components.value,newComponent]);
 };
 
 const getGraphComponent=(type)=> {

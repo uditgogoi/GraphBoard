@@ -5,25 +5,60 @@
     width="800"
     @close="onClose"
   >
-    <div class="flex gap-4 mb-4">
-      <div>
-        <el-text class="mx-1" type="primary">Title</el-text>
-        <el-input
-          v-model="title"
-          style="width: 240px"
-          placeholder="Edit title"
-        />
-      </div>
+    <div>
+      <el-text class="mx-1" type="primary">Title</el-text>
+      <el-input v-model="title" style="width: 240px" placeholder="Edit title" />
     </div>
     <div>
-      <el-text class="mx-1" type="primary">Add series data</el-text>
-     
-      <div v-for="series in props.data.chart.series" :key="series.name">
+      <el-text class="mx-1" type="primary">X-Axis Lables</el-text>
+      <el-input
+        v-model="xAxisLabel"
+        style="width: 240px"
+        placeholder="Edit X-Aixs"
+      />
+    </div>
+    <div>
+      <el-text class="mx-1" type="primary">Series Data</el-text>
+      <div v-for="series in barGraphData.itemData.series" :key="series.name">
+        <el-input
+          style="width: 240px"
+          placeholder="Enter Data"
+          v-model="seriesNameModel[series.name]"
+          v-if="displayEditSeriesName[series.name]"
+        />
+        <label v-else>
+          {{ series.name }}
+          <el-button :icon="Edit" circle @click="onEditSeriesName(series)" />
+        </label>
         <el-input
           v-model="dataModel[series.name]"
           style="width: 240px"
           placeholder="Enter Data"
         />
+      </div>
+      or
+      <el-button type="success" plain @click="addNewSeries"
+        >Add new Series</el-button
+      >
+      <div v-if="showNewSeriesAdditionFields">
+        <label>Series Name</label>
+        <el-input
+          v-model="seriesName"
+          style="width: 240px"
+          placeholder="Enter Series Name"
+        />
+
+        <label>Series values</label>
+        <el-input
+          v-model="seriesValue"
+          style="width: 240px"
+          placeholder="Enter Series Data"
+        />
+        <div>
+          <el-button type="primary" plain @click="onAddNewSeries"
+            >Add new series</el-button
+          >
+        </div>
       </div>
     </div>
     <div>
@@ -33,59 +68,128 @@
 </template>
 <script setup>
 import { ElMessage } from "element-plus";
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 const dialogTableVisible = ref(true);
-const emits = defineEmits(["onClose", "change"]);
+import { useGraphStore } from "../../store";
+import { Edit } from "@element-plus/icons-vue";
+
+const emits = defineEmits(["close"]);
 const onClose = () => {
-  emits("onClose");
+  emits("close");
 };
-const props = defineProps(["data"]);
+const props = defineProps(["id"]);
+const store = useGraphStore();
 const dataModel = ref({});
-const title = ref(props.data.title);
+const title = ref("");
+const seriesName = ref("");
+const seriesValue = ref("");
+const xAxisLabel = ref(null);
+const displayEditSeriesName = ref({});
+const seriesNameModel = ref({});
+const showNewSeriesAdditionFields = ref(false);
+const dashboardListData = computed(() => store.getDashboardItemList);
+const barGraphData = computed(() =>
+  store.getDashboardItemList.find((item) => item.id === props.id)
+);
 
 onMounted(() => {
   getDefaultSeriesData();
+  getInputDataModel();
 });
 
 const getDefaultSeriesData = () => {
-  const newData = Object.assign([],props.data.chart.series);
-  for (let i = 0; i < newData.length; i++) {
-    dataModel.value[newData[i].name] = newData[i].data.toString();
+  title.value = barGraphData.value.title;
+  xAxisLabel.value =
+    barGraphData.value.itemData.options.xaxis.categories.toString();
+};
+
+const getInputDataModel = () => {
+  const objectMode = Object.assign([], barGraphData.value.itemData.series);
+  for (let i = 0; i < objectMode.length; i++) {
+    dataModel.value[objectMode[i].name] = objectMode[i].data.toString();
   }
 };
 
 const onSubmit = () => {
-  const obj = Object.assign({}, props.data);
-  obj.title = title.value;
-  if(getChartSeriesData()){
-    obj.chart.series = getChartSeriesData();
+  const dataModelObj = JSON.parse(JSON.stringify(dataModel.value));
+  const dashboardList = dashboardListData.value;
+  for (let i = 0; i < dashboardList.length; i++) {
+    if (dashboardList[i].id === props.id) {
+      dashboardList[i].title = title.value;
+      for (let key in dataModelObj) {
+        const validModel = dataModelObj[key].split(",").filter((ele) => ele);
+        const validxAxisLabel = xAxisLabel.value
+          .split(",")
+          .filter((ele) => ele);
+        if (validModel.length !== validxAxisLabel.length) {
+          notification({
+            msg: `Number of series values in ${key} should be : ${validxAxisLabel.length}`,
+            type: "error",
+          });
+          return;
+        }
+        dashboardList[i].itemData.options.xaxis.categories = validxAxisLabel;
+        dashboardList[i].itemData.series = dashboardList[i].itemData.series
+          .map((item) => {
+            if (item.name === key) {
+              item.data = dataModelObj[key].split(",");
+              return item;
+            }
+            return item;
+          })
+          .filter((item) => item);
+      }
+    }
   }
-  console.log(obj)
-  emits("change", obj);
+  store.setNewDashboardItems(dashboardList);
+  emits("close");
 };
 
-const getChartSeriesData = () => {
-  const categories = props.data.chart.options.xaxis.categories;
-  let newArr = [];
-  const newDataModel = Object.assign({}, dataModel.value);
-  for (let key in newDataModel) {
-    let newConstructedArray = newDataModel[key].split(",");
-    if (newConstructedArray.length != categories.length) {
-      notification({
-        msg:
-          "Number of series should be equal to X axis labels in" +
-          newDataModel[key],
-        type: "error",
-      });
-      return;
-    }
-    newArr.push({
-      name: key,
-      data: newDataModel[key].split(",").join(),
-    });
+const addNewSeries = () => {
+  showNewSeriesAdditionFields.value = !showNewSeriesAdditionFields.value;
+  if (!showNewSeriesAdditionFields.value) {
+    seriesName.value = "";
+    seriesValue.value = "";
   }
-  console.log(newArr);
-  return newArr;
+};
+
+const onAddNewSeries = () => {
+  const dashboardList = dashboardListData.value;
+  if (!seriesName.value || !seriesValue.value) {
+    notification({ msg: "Invalid data entered", type: "error" });
+    return;
+  }
+
+  // const existingData = dashboardList.find(
+  //   (item) => item.id === props.id
+  // ).itemData;
+  const validxAxisLabel = xAxisLabel.value.split(",").filter((ele) => ele);
+  const validSeriesValue = seriesValue.value.split(",").filter((e) => e);
+  if (validSeriesValue.length !== validxAxisLabel.length) {
+    notification({
+      msg: "Data entered should be equivalent to xAxis values",
+      type: "error",
+    });
+    return;
+  }
+
+  for (let i = 0; i < dashboardList.length; i++) {
+    if (dashboardList[i].id === props.id) {
+      dashboardList[i].itemData.series.push({
+        name: seriesName,
+        data: validSeriesValue,
+      });
+    }
+  }
+  getInputDataModel();
+  store.setNewDashboardItems(dashboardList);
+  addNewSeries();
+};
+
+const onEditSeriesName = (series) => {
+  const dashboardList = dashboardListData.value;
+  displayEditSeriesName.value[series.name] = true;
+  seriesNameModel.value[series.name] = series.name;
 };
 
 const notification = (notice) => {

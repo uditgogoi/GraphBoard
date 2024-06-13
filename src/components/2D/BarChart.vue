@@ -1,26 +1,17 @@
 <template>
-  <div>
-    <BaseChart :chartOptions="chartOptions" :data="data" />
+  <div>    
+    <BaseChart :chartOptions="chartOptions" :data="data" :key="chartOptions"/>
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { computed } from "vue";
 import BaseChart from "./BaseChart.vue";
+import { useGraphStore } from "../../store";
 
-const props=defineProps(['graphData'])
-
-const chartOptions= ref(props.graphData.options);
-const data = ref(props.graphData.series);
-
-// console.log(data.value)
-console.log(data.value)
-
-// [
-//   {
-//     name: "series-1",
-//     data: [30, 40, 35, 50, 49, 60, 70, 91],
-//   },
-// ]
+const store= useGraphStore();
+const props= defineProps(['id']);
+const chartOptions=computed(()=> store.getDashboardItemList.find(item=> item.id===props.id)?.itemData.options);
+const data= computed(()=> store.getDashboardItemList.find(item=> item.id===props.id)?.itemData.series)
 </script>
 <style scoped>
 .barchart-wrapper {

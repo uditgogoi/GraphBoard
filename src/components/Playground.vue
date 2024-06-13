@@ -1,27 +1,38 @@
 <template>
   <div class="playground">
-    <span v-for="(component, key) in components" :key="key">
-      <Draggable :component="component" />
-    </span>
+    <div v-if="componentsList.length>0">
+      <div v-for="component in componentsList" :key="component.id">
+        <Draggable :component="component" :key="component.id"/>
+      </div>
+    </div>
   </div>
 </template>
 <script setup>
 import Draggable from "./Draggable.vue";
+import { useGraphStore } from "../store";
+import { computed, reactive, ref } from "vue";
+
+const store = useGraphStore();
 const props = defineProps(["components"]);
+const componentsList = computed(() => store.getDashboardItemList);
 </script>
 <style scoped>
 .playground {
   width: 95%;
-  height: 100vh;
+  min-height: 100vh;
+  height: auto;
   margin: auto;
   padding: 1rem;
   margin-top: 1rem;
   overflow-y: scroll;
-  overflow-x: scroll ;
+  overflow-x: scroll;
   position: relative;
-  background:
-    conic-gradient(from 90deg at 0.5px 0.5px,#09070700 90deg,rgb(207, 207, 207) 0) 
+  background: conic-gradient(
+      from 90deg at 0.5px 0.5px,
+      #09070700 90deg,
+      rgb(207, 207, 207) 0
+    )
     0 0/25px 25px;
-    background-color: rgb(253, 252, 248);
+  background-color: rgb(253, 252, 248);
 }
 </style>
