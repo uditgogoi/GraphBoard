@@ -83,11 +83,12 @@ onMounted(() => {
 const fetchGraphData = async () => {
   if (props.component.name === "BarChart") {
     const componentItemDataList= dashboardList.value;
-    for(let i=0; i< componentItemDataList.length; i++) {
-      if(componentItemDataList[i].id=== props.component.id) {
-        componentItemDataList[i].itemData= JSON.parse(JSON.stringify(defaultBarChartValues));
-      }
-    }
+    // for(let i=0; i< componentItemDataList.length; i++) {
+    //   if(componentItemDataList[i].id=== props.component.id) {
+    //     // componentItemDataList[i].itemData= JSON.parse(JSON.stringify(defaultBarChartValues));
+    //     componentItemDataList[i].itemData= {};
+    //   }
+    // }
     store.setNewDashboardItems(componentItemDataList);
   }
   graphDataLoaded.value=true;
@@ -104,7 +105,10 @@ const handleCommand = (e) => {
 };
 
 const onClose = () => {
+  graphDataLoaded.value=false;
   showAddNewData.value = false;
+  graphDataLoaded.value=true;
+  
 };
 
 const getComponentName = computed(() => {
