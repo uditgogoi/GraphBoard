@@ -2,10 +2,10 @@
   <el-dialog
     v-model="dialogTableVisible"
     title="Populate Data"
-    width="800"
+    width="1000"
     @close="onClose"
   >
-    <div>
+    <!-- <div>
       <el-text class="mx-1" type="primary">Title</el-text>
       <el-input v-model="title" style="width: 240px" placeholder="Edit title" />
     </div>
@@ -56,6 +56,95 @@
     </div>
     <div>
       <el-button type="primary" @click="onSubmit">Submit</el-button>
+    </div> -->
+    <el-row class="row">
+      <el-col :span="8" class="left-col">
+        <div class="fields">
+          <div>
+            <el-text class="mx-1">Title</el-text>
+          </div>
+          <div>
+            <el-input
+              v-model="title"
+              style="width: 240px"
+              placeholder="Edit title"
+            />
+          </div>
+        </div>
+        <div class="fields">
+          <div>
+            <el-text class="mx-1">X-Axis Label</el-text>
+          </div>
+          <div>
+            <el-input
+              v-model="xAxisLabel"
+              style="width: 240px"
+              placeholder="Edit X-Aixs"
+            />
+          </div>
+        </div>
+
+        <div>
+          <el-text class="mx-1" type="primary">Series Data</el-text>
+          <div
+            v-for="series in barGraphData.itemData.series"
+            :key="series.name"
+          >
+            <label>
+              {{ series.name }}
+            </label>
+            <el-input
+              v-model="dataModel[series.name]"
+              style="width: 240px"
+              placeholder="Enter Data"
+            />
+          </div>
+        </div>
+
+        <div class="fields">
+          Horizontal bar
+          <el-switch v-model="value" />
+        </div>
+      </el-col>
+
+      <el-col :span="16" class="right-col">
+        <p>
+          <el-text class="mx-1" size="large" type="primary"
+            >Create series</el-text
+          >
+        </p>
+        <div class="series">
+          <el-row>
+            <el-col :span="8">
+              <el-text class="mx-1">Series Name</el-text>
+            </el-col>
+            <el-col :span="16">
+              <el-text class="mx-1">Series Value</el-text>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="6">
+              <el-input v-model="seriesName" placeholder="Enter Series Name" />
+            </el-col>
+            <el-col :span="14" :offset="1">
+              <el-input v-model="seriesValue" placeholder="Enter Series Data" />
+            </el-col>
+            <el-col :span="2" :offset="1">
+              <el-button type="danger" :icon="Close" circle />
+            </el-col>
+          </el-row>
+          <el-row class="add-series-btn">
+            <el-col :span="12">
+              <el-button type="primary" @click="onSubmit"
+                >Save series</el-button
+              >
+            </el-col>
+          </el-row>
+        </div>
+      </el-col>
+    </el-row>
+    <div class="action">
+      <el-button type="primary" @click="onSubmit">Submit</el-button>
     </div>
   </el-dialog>
 </template>
@@ -64,7 +153,7 @@ import { ElMessage } from "element-plus";
 import { computed, onMounted, ref } from "vue";
 const dialogTableVisible = ref(true);
 import { useGraphStore } from "../../store";
-
+import { Close } from "@element-plus/icons-vue";
 const emits = defineEmits(["close"]);
 const onClose = () => {
   emits("close");
@@ -135,12 +224,9 @@ const onSubmit = () => {
   emits("close");
 };
 
-const addNewSeries = () => {
-  showNewSeriesAdditionFields.value = !showNewSeriesAdditionFields.value;
-  if (!showNewSeriesAdditionFields.value) {
+const clearFields = () => {
     seriesName.value = "";
     seriesValue.value = "";
-  }
 };
 
 const onAddNewSeries = () => {
@@ -171,6 +257,7 @@ const onAddNewSeries = () => {
   getInputDataModel();
   store.setNewDashboardItems(dashboardList);
   addNewSeries();
+  clearFields();
 };
 
 const notification = (notice) => {
@@ -180,3 +267,26 @@ const notification = (notice) => {
   });
 };
 </script>
+<style scoped>
+.left-col {
+  border-right: 1px solid rgba(208, 208, 208, 0.7);
+}
+.right-col {
+  padding: 0 1rem;
+}
+.row {
+  padding: 0.5rem;
+}
+.fields {
+  margin-top: 0.8rem;
+}
+.action {
+  margin-top: 1rem;
+}
+.text-center {
+  text-align: center;
+}
+.add-series-btn {
+  margin-top: 1rem;
+}
+</style>
