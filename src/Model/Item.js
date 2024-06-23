@@ -11,7 +11,14 @@ export const Item = {
     options: {
       chart: {
         id: "vue-chart",
-        type: ''
+        type: "",
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 2,
+          borderRadiusApplication: 'end',
+          horizontal: '',
+        }
       },
       xaxis: {
         categories: [],

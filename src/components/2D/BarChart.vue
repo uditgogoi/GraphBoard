@@ -1,6 +1,7 @@
 <template>
   <div>
-    <BaseChart :chartOptions="chartOptions" :data="data" v-if="xAxisLabels.length>0"/>
+    <BaseChart :chartOptions="chartOptions" :data="data" v-if="xAxisLabels.length>0 && ready"/>
+    <el-skeleton :rows="3" v-else/>
   </div>
 </template>
 <script setup>
@@ -9,7 +10,7 @@ import BaseChart from "./BaseChart.vue";
 import { useGraphStore } from "../../store";
 
 const store = useGraphStore();
-const props = defineProps(["id"]);
+const props = defineProps(["id","ready"]);
 const chartOptions = computed(
   () =>
     store.getDashboardItemList.find((item) => item.id === props.id)?.itemData

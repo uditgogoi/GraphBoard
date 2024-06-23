@@ -83,27 +83,8 @@
             />
           </div>
         </div>
-
-        <div>
-          <el-text class="mx-1" type="primary">Series Data</el-text>
-          <div
-            v-for="series in barGraphData.itemData.series"
-            :key="series.name"
-          >
-            <label>
-              {{ series.name }}
-            </label>
-            <el-input
-              v-model="dataModel[series.name]"
-              style="width: 240px"
-              placeholder="Enter Data"
-            />
-          </div>
-        </div>
-
         <div class="fields">
-          Horizontal bar
-          <el-switch v-model="value" />
+          <el-switch v-model="horizontalValue[props.id]" @change="onSetHorizontalValue"/>
         </div>
       </el-col>
 
@@ -135,16 +116,48 @@
           </el-row>
           <el-row class="add-series-btn">
             <el-col :span="12">
-              <el-button type="primary" @click="onSubmit"
+              <el-button type="primary" @click="onAddNewSeries"
                 >Save series</el-button
               >
             </el-col>
           </el-row>
+          <div
+            class="series-data"
+            v-if="barGraphData.itemData.series.length > 0"
+          >
+            <el-text class="mx-1" type="primary">Series Data</el-text>
+            <el-row
+              v-for="series in barGraphData.itemData.series"
+              :key="series.id"
+              class="series-list"
+            >
+              <el-col :span="8">
+                <!-- <el-input
+                  v-model="seriesModel[series.name]"
+                  style="width: 240px"
+                  placeholder="Series name"
+                /> -->
+                <el-text class="mx-1" type="primary">{{ series.name }}</el-text>
+              </el-col>
+              <el-col :span="12">
+                <el-text class="mx-1" type="primary">{{ series.data.join() }}</el-text>
+                <!-- <el-input
+                  v-model="dataModel[series.name]"
+                  style="width: 240px"
+                  placeholder="Enter Data"
+                /> -->
+              </el-col>
+              <el-col :span="4">
+                <!-- <el-button type="info" :icon="EditPen" circle  text @click="onClickEdit(series.id)"/> -->
+                <el-button type="danger" :icon="DeleteFilled" circle text @click="onClickDelete(series.id)"/>
+              </el-col>
+            </el-row>
+          </div>
         </div>
       </el-col>
     </el-row>
     <div class="action">
-      <el-button type="primary" @click="onSubmit">Submit</el-button>
+      <el-button type="primary" @click="onSubmit">Save Data</el-button>
     </div>
   </el-dialog>
 </template>
@@ -153,7 +166,10 @@ import { ElMessage } from "element-plus";
 import { computed, onMounted, ref } from "vue";
 const dialogTableVisible = ref(true);
 import { useGraphStore } from "../../store";
-import { Close } from "@element-plus/icons-vue";
+import { Close,EditPen,DeleteFilled } from "@element-plus/icons-vue";
+import {uniqueID} from "../../utils/helper";
+
+
 const emits = defineEmits(["close"]);
 const onClose = () => {
   emits("close");
@@ -161,10 +177,12 @@ const onClose = () => {
 const props = defineProps(["id"]);
 const store = useGraphStore();
 const dataModel = ref({});
+const seriesModel= ref({});
 const title = ref("");
 const seriesName = ref("");
 const seriesValue = ref("");
 const xAxisLabel = ref(null);
+const horizontalValue= ref({});
 const showNewSeriesAdditionFields = ref(false);
 const dashboardListData = computed(() => store.getDashboardItemList);
 const barGraphData = computed(
@@ -172,9 +190,21 @@ const barGraphData = computed(
 );
 
 onMounted(() => {
+  getDefaultOptions();
   getDefaultSeriesData();
   getInputDataModel();
 });
+
+const getDefaultOptions=()=> {
+  const dashboardList = dashboardListData.value;
+  for (let i = 0; i < dashboardList.length; i++) {
+    if (dashboardList[i].id === props.id) {
+      horizontalValue.value[props.id]= dashboardList[i]?.itemData?.options?.plotOptions?.bar?.horizontal || false;
+    }
+  }
+  console.log(horizontalValue.value);
+  console.log(dashboardList.value);
+}
 
 const getDefaultSeriesData = () => {
   title.value = barGraphData.value.title || "";
@@ -219,14 +249,13 @@ const onSubmit = () => {
       }
     }
   }
-  console.log(dashboardList);
   store.setNewDashboardItems(dashboardList);
-  emits("close");
+  emits("submit");
 };
 
 const clearFields = () => {
-    seriesName.value = "";
-    seriesValue.value = "";
+  seriesName.value = "";
+  seriesValue.value = "";
 };
 
 const onAddNewSeries = () => {
@@ -244,19 +273,19 @@ const onAddNewSeries = () => {
     });
     return;
   }
-  console.log(dashboardList);
   for (let i = 0; i < dashboardList.length; i++) {
     if (dashboardList[i].id === props.id) {
       dashboardList[i].itemData.options.xaxis.categories = validxAxisLabel;
       dashboardList[i].itemData?.series.push({
         name: seriesName.value,
         data: validSeriesValue,
+        id: uniqueID()
       });
     }
   }
   getInputDataModel();
   store.setNewDashboardItems(dashboardList);
-  addNewSeries();
+  // addNewSeries();
   clearFields();
 };
 
@@ -266,6 +295,31 @@ const notification = (notice) => {
     type: notice.type,
   });
 };
+
+const onClickEdit=(seriesId)=> {
+  const dashboardData= JSON.parse(JSON.stringify(dashboardListData.value));
+  console.log(dashboardData)
+}
+
+const onClickDelete=(seriesId)=> {
+  const dashboardList= dashboardListData.value;
+  for (let i = 0; i < dashboardList.length; i++) {
+    if (dashboardList[i].id === props.id) {
+      dashboardList[i].itemData.series= dashboardList[i].itemData.series.filter(item=> item.id !== seriesId);
+    }
+  }
+  store.setNewDashboardItems(dashboardList);
+}
+
+const onSetHorizontalValue=(e)=> {
+  const dashboardList= dashboardListData.value;
+  for (let i = 0; i < dashboardList.length; i++) {
+    if (dashboardList[i].id === props.id) {
+      dashboardList[i].itemData.options.plotOptions.bar.horizontal= e;
+    }
+  }
+  store.setNewDashboardItems(dashboardList);
+}
 </script>
 <style scoped>
 .left-col {
@@ -288,5 +342,18 @@ const notification = (notice) => {
 }
 .add-series-btn {
   margin-top: 1rem;
+}
+.series-data {
+  margin-top: 1rem;
+}
+.series-list {
+  padding: 0.2rem 2rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center
+}
+.series-list:nth-child(even) {
+  background: #e3e3e2;
+  
 }
 </style>

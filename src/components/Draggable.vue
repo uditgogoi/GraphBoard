@@ -44,7 +44,7 @@
         <component
           :key="props.component.id"
           :is="getComponentName"
-          v-if="graphDataLoaded"
+          :ready="graphDataLoaded"
           :id="props.component.id"
         ></component>
       </el-card>
@@ -52,6 +52,7 @@
     <PopulateBarData
       v-if="showAddNewData"
       @close="onClose"
+      @submit="onSubmit"
       :id="props.component.id"
     />
   </div>
@@ -65,13 +66,15 @@ import { defaultBarChartValues } from "../Model/Charts";
 import { useGraphStore } from "../store";
 
 const props = defineProps(["component"]);
-const store= useGraphStore();
-const dashboardList= computed(()=> store.getDashboardItemList);
+const store = useGraphStore();
+const dashboardList = computed(() => store.getDashboardItemList);
 const showAddNewData = ref(false);
 const graphDataLoaded = ref(false);
 const xValue = ref(100);
 const yValue = ref(112);
-const cardTitle = computed(()=> dashboardList.value.find(item=> item.id=== props.component.id).title);
+const cardTitle = computed(
+  () => dashboardList.value.find((item) => item.id === props.component.id).title
+);
 const print = (val) => {
   // console.log(val);
 };
@@ -82,7 +85,7 @@ onMounted(() => {
 
 const fetchGraphData = async () => {
   if (props.component.name === "BarChart") {
-    const componentItemDataList= dashboardList.value;
+    const componentItemDataList = dashboardList.value;
     // for(let i=0; i< componentItemDataList.length; i++) {
     //   if(componentItemDataList[i].id=== props.component.id) {
     //     // componentItemDataList[i].itemData= JSON.parse(JSON.stringify(defaultBarChartValues));
@@ -91,7 +94,7 @@ const fetchGraphData = async () => {
     // }
     store.setNewDashboardItems(componentItemDataList);
   }
-  graphDataLoaded.value=true;
+  graphDataLoaded.value = true;
 };
 
 const handleCommand = (e) => {
@@ -99,16 +102,24 @@ const handleCommand = (e) => {
     showAddNewData.value = true;
   } else if (e === "edit") {
   } else {
-    const componentList= store.getDashboardItemList.filter(item=> item.id!= props.component.id);
+    const componentList = store.getDashboardItemList.filter(
+      (item) => item.id != props.component.id
+    );
     store.setNewDashboardItems(componentList);
   }
 };
 
 const onClose = () => {
-  graphDataLoaded.value=false;
   showAddNewData.value = false;
-  graphDataLoaded.value=true;
-  
+  graphDataLoaded.value = true;
+};
+
+const onSubmit = () => {
+  graphDataLoaded.value = false;
+  showAddNewData.value = false;
+  setTimeout(() => {
+    onClose()
+  }, 1000);
 };
 
 const getComponentName = computed(() => {
@@ -120,8 +131,6 @@ const getComponentName = computed(() => {
   }
   return component;
 });
-
-
 
 const onDragEnd = (obj, id) => {
   // console.log(obj, id);
