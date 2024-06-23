@@ -84,7 +84,12 @@
           </div>
         </div>
         <div class="fields">
-          <el-switch v-model="horizontalValue[props.id]" @change="onSetHorizontalValue"/>
+          <div>Horizontal Bar</div>
+          <el-switch
+            v-model="horizontalValue[props.id]"
+            @change="onSetHorizontalValue"
+            v-if="activeTabName==='manual'"
+          />
         </div>
       </el-col>
 
@@ -94,7 +99,13 @@
             >Create series</el-text
           >
         </p>
-        <div class="series">
+        <el-tabs
+          v-model="activeTabName"
+          class="demo-tabs"
+          @tab-click="handleDataOptionChange"
+        >
+          <el-tab-pane label="Add Manually" name="manual">
+            <div class="series">
           <el-row>
             <el-col :span="8">
               <el-text class="mx-1">Series Name</el-text>
@@ -140,7 +151,9 @@
                 <el-text class="mx-1" type="primary">{{ series.name }}</el-text>
               </el-col>
               <el-col :span="12">
-                <el-text class="mx-1" type="primary">{{ series.data.join() }}</el-text>
+                <el-text class="mx-1" type="primary">{{
+                  series.data.join()
+                }}</el-text>
                 <!-- <el-input
                   v-model="dataModel[series.name]"
                   style="width: 240px"
@@ -149,11 +162,28 @@
               </el-col>
               <el-col :span="4">
                 <!-- <el-button type="info" :icon="EditPen" circle  text @click="onClickEdit(series.id)"/> -->
-                <el-button type="danger" :icon="DeleteFilled" circle text @click="onClickDelete(series.id)"/>
+                <el-button
+                  type="danger"
+                  :icon="DeleteFilled"
+                  circle
+                  text
+                  @click="onClickDelete(series.id)"
+                />
               </el-col>
             </el-row>
           </div>
         </div>
+          </el-tab-pane>
+          <el-tab-pane label="Add File" name="file">
+            <FileUpload/>
+          </el-tab-pane>
+          <el-tab-pane label="Add Api" name="api">
+            <div class="api-input">
+              <label>Add Api: </label>
+              <el-input v-model="input" style="width: 80%" placeholder="Please input" />
+            </div>
+          </el-tab-pane>
+        </el-tabs>
       </el-col>
     </el-row>
     <div class="action">
@@ -166,10 +196,9 @@ import { ElMessage } from "element-plus";
 import { computed, onMounted, ref } from "vue";
 const dialogTableVisible = ref(true);
 import { useGraphStore } from "../../store";
-import { Close,EditPen,DeleteFilled } from "@element-plus/icons-vue";
-import {uniqueID} from "../../utils/helper";
-
-
+import { Close, EditPen, DeleteFilled } from "@element-plus/icons-vue";
+import { uniqueID } from "../../utils/helper";
+import FileUpload from "../../components/FileUpload.vue";
 const emits = defineEmits(["close"]);
 const onClose = () => {
   emits("close");
@@ -177,34 +206,34 @@ const onClose = () => {
 const props = defineProps(["id"]);
 const store = useGraphStore();
 const dataModel = ref({});
-const seriesModel= ref({});
+const seriesModel = ref({});
 const title = ref("");
 const seriesName = ref("");
 const seriesValue = ref("");
 const xAxisLabel = ref(null);
-const horizontalValue= ref({});
+const horizontalValue = ref({});
+const activeTabName= ref('manual')
 const showNewSeriesAdditionFields = ref(false);
 const dashboardListData = computed(() => store.getDashboardItemList);
 const barGraphData = computed(
   () => store.getDashboardItemList.find((item) => item.id === props.id) || {}
 );
-
 onMounted(() => {
   getDefaultOptions();
   getDefaultSeriesData();
   getInputDataModel();
 });
 
-const getDefaultOptions=()=> {
+const getDefaultOptions = () => {
   const dashboardList = dashboardListData.value;
   for (let i = 0; i < dashboardList.length; i++) {
     if (dashboardList[i].id === props.id) {
-      horizontalValue.value[props.id]= dashboardList[i]?.itemData?.options?.plotOptions?.bar?.horizontal || false;
+      horizontalValue.value[props.id] =
+        dashboardList[i]?.itemData?.options?.plotOptions?.bar?.horizontal ||
+        false;
     }
   }
-  console.log(horizontalValue.value);
-  console.log(dashboardList.value);
-}
+};
 
 const getDefaultSeriesData = () => {
   title.value = barGraphData.value.title || "";
@@ -279,7 +308,7 @@ const onAddNewSeries = () => {
       dashboardList[i].itemData?.series.push({
         name: seriesName.value,
         data: validSeriesValue,
-        id: uniqueID()
+        id: uniqueID(),
       });
     }
   }
@@ -296,29 +325,35 @@ const notification = (notice) => {
   });
 };
 
-const onClickEdit=(seriesId)=> {
-  const dashboardData= JSON.parse(JSON.stringify(dashboardListData.value));
-  console.log(dashboardData)
-}
+const onClickEdit = (seriesId) => {
+  const dashboardData = JSON.parse(JSON.stringify(dashboardListData.value));
+  console.log(dashboardData);
+};
 
-const onClickDelete=(seriesId)=> {
-  const dashboardList= dashboardListData.value;
+const onClickDelete = (seriesId) => {
+  const dashboardList = dashboardListData.value;
   for (let i = 0; i < dashboardList.length; i++) {
     if (dashboardList[i].id === props.id) {
-      dashboardList[i].itemData.series= dashboardList[i].itemData.series.filter(item=> item.id !== seriesId);
+      dashboardList[i].itemData.series = dashboardList[
+        i
+      ].itemData.series.filter((item) => item.id !== seriesId);
     }
   }
   store.setNewDashboardItems(dashboardList);
-}
+};
 
-const onSetHorizontalValue=(e)=> {
-  const dashboardList= dashboardListData.value;
+const onSetHorizontalValue = (e) => {
+  const dashboardList = dashboardListData.value;
   for (let i = 0; i < dashboardList.length; i++) {
     if (dashboardList[i].id === props.id) {
-      dashboardList[i].itemData.options.plotOptions.bar.horizontal= e;
+      dashboardList[i].itemData.options.plotOptions.bar.horizontal = e;
     }
   }
   store.setNewDashboardItems(dashboardList);
+};
+
+const handleDataOptionChange=(tab)=> {
+  activeTabName.value= tab.props.name
 }
 </script>
 <style scoped>
@@ -350,10 +385,12 @@ const onSetHorizontalValue=(e)=> {
   padding: 0.2rem 2rem;
   margin-top: 0.5rem;
   display: flex;
-  align-items: center
+  align-items: center;
 }
 .series-list:nth-child(even) {
   background: #e3e3e2;
-  
+}
+.api-input {
+  margin-top: 1rem;
 }
 </style>
