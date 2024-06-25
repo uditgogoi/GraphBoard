@@ -34,6 +34,7 @@
                     >Populate Data</el-dropdown-item
                   >
                   <el-dropdown-item command="edit">Edit Style</el-dropdown-item>
+                  <el-dropdown-item command="clone">Clone</el-dropdown-item>
                   <el-dropdown-item command="remove">Remove</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -62,9 +63,8 @@ import { computed, onMounted, ref } from "vue";
 import BarChart from "./2D/BarChart.vue";
 import AreaChart from "./2D/AreaChart.vue";
 import PopulateBarData from "./modal/populateBarData.vue";
-import { defaultBarChartValues } from "../Model/Charts";
 import { useGraphStore } from "../store";
-
+import {uniqueID} from "../utils/helper";
 const props = defineProps(["component"]);
 const store = useGraphStore();
 const dashboardList = computed(() => store.getDashboardItemList);
@@ -101,7 +101,11 @@ const handleCommand = (e) => {
   if (e === "populate") {
     showAddNewData.value = true;
   } else if (e === "edit") {
-  } else {
+    // current
+  } else if(e==='clone'){
+    // clone the current 
+    cloneCurrentComponent();
+  }else {
     const componentList = store.getDashboardItemList.filter(
       (item) => item.id != props.component.id
     );
@@ -135,6 +139,17 @@ const getComponentName = computed(() => {
 const onDragEnd = (obj, id) => {
   // console.log(obj, id);
 };
+
+const cloneCurrentComponent=()=> {
+  console.log(props.component)
+  const componentList = store.getDashboardItemList;
+  const componentToCopy= componentList.find(component=> component.id === props.component.id)
+  const newComponent= JSON.parse(JSON.stringify(componentToCopy));
+  newComponent.id= uniqueID();
+  componentList.push(newComponent)
+  store.setNewDashboardItems(componentList);
+
+}
 </script>
 <style scoped>
 .component-wrapper {
