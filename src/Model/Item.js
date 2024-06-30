@@ -10,7 +10,7 @@ export const Item = {
   itemData: {
     options: {
       chart: {
-        id: "vue-chart",
+        id: "",
         type: "",
       },
       plotOptions: {

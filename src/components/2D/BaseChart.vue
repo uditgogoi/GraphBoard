@@ -6,9 +6,10 @@
         type="bar"
         :options="props.chartOptions"
         :series="props.data"
+        :id="props.id"
       ></apexchart>
     </div>
   </template>
   <script setup>
-  const props=defineProps(['chartOptions','data']);
+  const props=defineProps(['chartOptions','data',"id"]);
   </script>

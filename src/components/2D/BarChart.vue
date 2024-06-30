@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BaseChart :chartOptions="chartOptions" :data="data" v-if="xAxisLabels.length>0 && ready"/>
+    <BaseChart :key="props.id" :chartOptions="chartOptions" :data="data" v-if="xAxisLabels.length>0" :id="props.id"/>
     <el-skeleton :rows="3" v-else/>
   </div>
 </template>

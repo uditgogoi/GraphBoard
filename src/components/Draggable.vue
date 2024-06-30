@@ -141,7 +141,6 @@ const onDragEnd = (obj, id) => {
 };
 
 const cloneCurrentComponent=()=> {
-  console.log(props.component)
   const componentList = store.getDashboardItemList;
   const componentToCopy= componentList.find(component=> component.id === props.component.id)
   const newComponent= JSON.parse(JSON.stringify(componentToCopy));
