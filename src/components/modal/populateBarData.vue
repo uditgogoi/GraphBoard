@@ -164,7 +164,6 @@ const barGraphData = computed(
 onMounted(() => {
   getDefaultOptions();
   getDefaultSeriesData();
-  // getInputDataModel();
 });
 
 const getDefaultOptions = () => {
@@ -186,13 +185,6 @@ const getDefaultSeriesData = () => {
     barGraphData.value.itemData.options?.xaxis?.categories?.toString() || "";
 };
 
-// const getInputDataModel = () => {
-//   const objectMode = Object.assign([], barGraphData.value.itemData.series);
-//   for (let i = 0; i < objectMode.length; i++) {
-//     dataModel.value[objectMode[i].name] = objectMode[i].data.toString();
-//   }
-// };
-
 const onSubmit = () => {
   const dashboardList = JSON.parse(JSON.stringify(dashboardListData.value));
   for (let i = 0; i < dashboardList.length; i++) {
@@ -209,39 +201,6 @@ const onSubmit = () => {
   }
   store.setNewDashboardItems(dashboardList);
   newSeriesData.value = {};
-  //1.  save the labels
-  //2. save the data series
-
-  // 3. save horizontal
-
-  // for (let i = 0; i < dashboardList.length; i++) {
-  //   if (dashboardList[i].id === props.id) {
-  //     dashboardList[i].title = title.value;
-  //     const validxAxisLabel = xAxisLabel.value.split(",").filter((ele) => ele);
-  //     dashboardList[i].itemData.options.xaxis.categories = validxAxisLabel;
-
-  //     for (let key in dataModelObj) {
-  //       const validModel = dataModelObj[key].split(",").filter((ele) => ele);
-  //       if (validModel.length !== validxAxisLabel.length) {
-  //         notification({
-  //           msg: `Number of series values in ${key} should be : ${validxAxisLabel.length}`,
-  //           type: "error",
-  //         });
-  //         return;
-  //       }
-  //       dashboardList[i].itemData.series = dashboardList[i].itemData.series
-  //         .map((item) => {
-  //           if (item.name === key) {
-  //             item.data = dataModelObj[key].split(",");
-  //             return item;
-  //           }
-  //           return item;
-  //         })
-  //         .filter((item) => item);
-  //     }
-  //   }
-  // }
-  // store.setNewDashboardItems(dashboardList);
   emits("submit");
 };
 
