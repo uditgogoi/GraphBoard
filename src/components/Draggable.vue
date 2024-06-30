@@ -34,6 +34,7 @@
                     >Populate Data</el-dropdown-item
                   >
                   <el-dropdown-item command="edit">Edit Style</el-dropdown-item>
+                  <el-dropdown-item command="clone">Clone</el-dropdown-item>
                   <el-dropdown-item command="remove">Remove</el-dropdown-item>
                 </el-dropdown-menu>
               </template>
@@ -44,7 +45,7 @@
         <component
           :key="props.component.id"
           :is="getComponentName"
-          v-if="graphDataLoaded"
+          :ready="graphDataLoaded"
           :id="props.component.id"
         ></component>
       </el-card>
@@ -52,6 +53,7 @@
     <PopulateBarData
       v-if="showAddNewData"
       @close="onClose"
+      @submit="onSubmit"
       :id="props.component.id"
     />
   </div>
@@ -61,17 +63,18 @@ import { computed, onMounted, ref } from "vue";
 import BarChart from "./2D/BarChart.vue";
 import AreaChart from "./2D/AreaChart.vue";
 import PopulateBarData from "./modal/populateBarData.vue";
-import { defaultBarChartValues } from "../Model/Charts";
 import { useGraphStore } from "../store";
-
+import {uniqueID} from "../utils/helper";
 const props = defineProps(["component"]);
-const store= useGraphStore();
-const dashboardList= computed(()=> store.getDashboardItemList);
+const store = useGraphStore();
+const dashboardList = computed(() => store.getDashboardItemList);
 const showAddNewData = ref(false);
 const graphDataLoaded = ref(false);
 const xValue = ref(100);
 const yValue = ref(112);
-const cardTitle = computed(()=> dashboardList.value.find(item=> item.id=== props.component.id).title);
+const cardTitle = computed(
+  () => dashboardList.value.find((item) => item.id === props.component.id).title
+);
 const print = (val) => {
   // console.log(val);
 };
@@ -82,29 +85,45 @@ onMounted(() => {
 
 const fetchGraphData = async () => {
   if (props.component.name === "BarChart") {
-    const componentItemDataList= dashboardList.value;
-    for(let i=0; i< componentItemDataList.length; i++) {
-      if(componentItemDataList[i].id=== props.component.id) {
-        componentItemDataList[i].itemData= JSON.parse(JSON.stringify(defaultBarChartValues));
-      }
-    }
+    const componentItemDataList = dashboardList.value;
+    // for(let i=0; i< componentItemDataList.length; i++) {
+    //   if(componentItemDataList[i].id=== props.component.id) {
+    //     // componentItemDataList[i].itemData= JSON.parse(JSON.stringify(defaultBarChartValues));
+    //     componentItemDataList[i].itemData= {};
+    //   }
+    // }
     store.setNewDashboardItems(componentItemDataList);
   }
-  graphDataLoaded.value=true;
+  graphDataLoaded.value = true;
 };
 
 const handleCommand = (e) => {
   if (e === "populate") {
     showAddNewData.value = true;
   } else if (e === "edit") {
-  } else {
-    const componentList= store.getDashboardItemList.filter(item=> item.id!= props.component.id);
+    // current
+  } else if(e==='clone'){
+    // clone the current 
+    cloneCurrentComponent();
+  }else {
+    const componentList = store.getDashboardItemList.filter(
+      (item) => item.id != props.component.id
+    );
     store.setNewDashboardItems(componentList);
   }
 };
 
 const onClose = () => {
   showAddNewData.value = false;
+  graphDataLoaded.value = true;
+};
+
+const onSubmit = () => {
+  graphDataLoaded.value = false;
+  showAddNewData.value = false;
+  setTimeout(() => {
+    onClose()
+  }, 1000);
 };
 
 const getComponentName = computed(() => {
@@ -117,11 +136,19 @@ const getComponentName = computed(() => {
   return component;
 });
 
-
-
 const onDragEnd = (obj, id) => {
   // console.log(obj, id);
 };
+
+const cloneCurrentComponent=()=> {
+  const componentList = store.getDashboardItemList;
+  const componentToCopy= componentList.find(component=> component.id === props.component.id)
+  const newComponent= JSON.parse(JSON.stringify(componentToCopy));
+  newComponent.id= uniqueID();
+  componentList.push(newComponent)
+  store.setNewDashboardItems(componentList);
+
+}
 </script>
 <style scoped>
 .component-wrapper {
