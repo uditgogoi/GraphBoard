@@ -11,7 +11,7 @@ import ApexCharts from 'apexcharts';
 import Vue3DraggableResizable from 'vue3-draggable-resizable';
 import { createPinia } from 'pinia';
 import 'vue3-draggable-resizable/dist/Vue3DraggableResizable.css';
-
+import './style/index.css';
 const pinia = createPinia()
 const app = createApp(App);
 app.config.globalProperties.$apexcharts = ApexCharts;

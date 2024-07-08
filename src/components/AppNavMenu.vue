@@ -3,12 +3,12 @@
     <el-col :span="24">
       <el-row>
         <el-col :span="24" class="flex align-center pa-2">
-          <img
+          <!-- <img
             src="https://seeklogo.com/images/A/atomic-logo-42027187FA-seeklogo.com.png"
             alt=""
             width="30"
           />
-            &nbsp; &nbsp;
+            &nbsp; &nbsp; -->
           <h3>GraphBoards</h3>
         </el-col>
       </el-row>

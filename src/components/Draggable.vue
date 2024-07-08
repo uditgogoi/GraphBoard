@@ -31,7 +31,7 @@
               <template #dropdown>
                 <el-dropdown-menu @select="onSelectMenu">
                   <el-dropdown-item command="populate"
-                    >Populate Data</el-dropdown-item
+                    >Data Setting</el-dropdown-item
                   >
                   <el-dropdown-item command="edit">Edit Style</el-dropdown-item>
                   <el-dropdown-item command="clone">Clone</el-dropdown-item>
@@ -50,7 +50,8 @@
         ></component>
       </el-card>
     </Vue3DraggableResizable>
-    <PopulateBarData
+    <component
+      :is="popupComponent"
       v-if="showAddNewData"
       @close="onClose"
       @submit="onSubmit"
@@ -62,9 +63,13 @@
 import { computed, onMounted, ref } from "vue";
 import BarChart from "./2D/BarChart.vue";
 import AreaChart from "./2D/AreaChart.vue";
+import StatisticCard from "./2D/StatisticCard.vue";
+import Table from "./2D/tables/SimpleTable.vue";
 import PopulateBarData from "./modal/populateBarData.vue";
 import { useGraphStore } from "../store";
 import {uniqueID} from "../utils/helper";
+import PopulateStatisticData from "./modal/PopulateStatisticData.vue";
+
 const props = defineProps(["component"]);
 const store = useGraphStore();
 const dashboardList = computed(() => store.getDashboardItemList);
@@ -72,6 +77,7 @@ const showAddNewData = ref(false);
 const graphDataLoaded = ref(false);
 const xValue = ref(100);
 const yValue = ref(112);
+const popupComponent= ref(null);
 const cardTitle = computed(
   () => dashboardList.value.find((item) => item.id === props.component.id).title
 );
@@ -80,7 +86,9 @@ const print = (val) => {
 };
 
 onMounted(() => {
-  fetchGraphData();
+  console.log(props.component);
+  if(props.component.type==='graph')
+    fetchGraphData();
 });
 
 const fetchGraphData = async () => {
@@ -100,6 +108,9 @@ const fetchGraphData = async () => {
 const handleCommand = (e) => {
   if (e === "populate") {
     showAddNewData.value = true;
+    console.log(props.component)
+    popupComponent.value=getPopupComponent();
+    
   } else if (e === "edit") {
     // current
   } else if(e==='clone'){
@@ -112,6 +123,15 @@ const handleCommand = (e) => {
     store.setNewDashboardItems(componentList);
   }
 };
+
+const getPopupComponent= ()=> {
+  if(props.component.subType==='bargraph') {
+    return PopulateBarData;
+  }
+  if(props.component.subType==='simple-statistic') {
+    return PopulateStatisticData;
+  }
+}
 
 const onClose = () => {
   showAddNewData.value = false;
@@ -127,6 +147,12 @@ const onSubmit = () => {
 };
 
 const getComponentName = computed(() => {
+  if(props.component.type==='statistic') {
+    return StatisticCard;
+  }
+  if(props.component.type==='table') {
+    return Table;
+  }
   let component = BarChart;
   switch (props.component.name) {
     case "AreaChart":
