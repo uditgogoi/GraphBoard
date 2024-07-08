@@ -56,6 +56,7 @@ const addGraph = (type) => {
   newComponent.name = getGraphComponent(type);
   newComponent.section = type;
   newComponent.type = "graph";
+  newComponent.subType = "bargraph";
   store.setNewDashboardItems([...components.value, newComponent]);
 };
 
@@ -69,6 +70,7 @@ const addBox = () => {
   newComponent.title = `Demo Statistic`;
   newComponent.name = `Number`;
   newComponent.type = `statistic`;
+  newComponent.subType = `simple-statistic`;
   store.setNewDashboardItems([...components.value, newComponent]);
 };
 
