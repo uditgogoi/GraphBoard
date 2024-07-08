@@ -30,9 +30,9 @@ const componentsList = computed(() => store.getDashboardItemList);
   background: conic-gradient(
       from 90deg at 0.5px 0.5px,
       #09070700 90deg,
-      rgb(228, 226, 226) 0
+      rgb(184, 184, 184) 0
     )
     0 0/25px 25px;
-  background-color: rgb(250, 250, 244);
+  background-color: rgb(219, 219, 219);
 }
 </style>

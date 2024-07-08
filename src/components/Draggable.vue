@@ -62,8 +62,6 @@
 import { computed, onMounted, ref } from "vue";
 import BarChart from "./2D/BarChart.vue";
 import AreaChart from "./2D/AreaChart.vue";
-import StatisticCard from "./2D/StatisticCard.vue";
-import Table from "./2D/tables/SimpleTable.vue";
 import PopulateBarData from "./modal/populateBarData.vue";
 import { useGraphStore } from "../store";
 import {uniqueID} from "../utils/helper";
@@ -82,9 +80,7 @@ const print = (val) => {
 };
 
 onMounted(() => {
-  console.log(props.component);
-  if(props.component.type==='graph')
-    fetchGraphData();
+  fetchGraphData();
 });
 
 const fetchGraphData = async () => {
@@ -131,12 +127,6 @@ const onSubmit = () => {
 };
 
 const getComponentName = computed(() => {
-  if(props.component.type==='statistic') {
-    return StatisticCard;
-  }
-  if(props.component.type==='table') {
-    return Table;
-  }
   let component = BarChart;
   switch (props.component.name) {
     case "AreaChart":
