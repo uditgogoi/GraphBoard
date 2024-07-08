@@ -1,12 +1,12 @@
 <template>
   <div class="statistic-card">
-    <el-statistic :value="98500">
+    <el-statistic :value="data.value">
       <template #title>
         <div style="display: inline-flex; align-items: center">
-          Daily active users
+          {{ data.itemData.description }}
           <el-tooltip
             effect="dark"
-            content="Number of users who logged into the product in one day"
+            :content="data.itemData.infoText"
             placement="top"
           >
             <el-icon style="margin-left: 4px" :size="12">
@@ -18,9 +18,9 @@
     </el-statistic>
     <div class="statistic-footer">
       <div class="footer-item">
-        <span>than yesterday</span>
+        <span>{{ data.itemData.suffixText }}</span>
         <span class="green">
-          24%
+          {{  data.itemData.trendValue}}{{ data.itemData.trendType }}
           <el-icon>
             <CaretTop />
           </el-icon>
@@ -36,6 +36,14 @@ import {
   CaretTop,
   Warning,
 } from "@element-plus/icons-vue";
+import { computed, ref, watch,onMounted } from "vue";
+import { useGraphStore } from "../../store";
+
+const store = useGraphStore();
+const props = defineProps(["id", "ready"]);
+const data = computed(() =>
+  store.getDashboardItemList.find((item) => item.id === props.id)
+);
 </script>
 <style scoped>
 .el-statistic {

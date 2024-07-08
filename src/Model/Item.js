@@ -33,8 +33,16 @@ export const StatisticItem = {
   name: "",
   title: "",
   type: "",
-  value:'',
-  description:'',
+  value:'0',
+  itemData:{
+    description:'Daily active users',
+    suffixText:"than yesterday",
+    trendValue:'24',
+    trendIncrement:true,
+    trendType:'%',
+    infoText:'Number of users who logged into the product in one day',
+  },
+  metaData:{},
   w: 250,
   h: 250,
 };

@@ -25,6 +25,11 @@
                     placeholder="Edit title"
                   />
                 </div>
+              </div>
+              <div class="fields">
+                <div>
+                  <el-text class="mx-1">Value</el-text>
+                </div>
                 <div>
                   <el-input
                     v-model="statisticValue"
@@ -32,6 +37,13 @@
                     placeholder="Value"
                   />
                 </div>
+              </div>
+              <div class="fields">
+                <div>Increment</div>
+                <el-switch
+                  v-model="incremented"
+                  @change="onSetTrend"
+                />
               </div>
             </el-tab-pane>
             <el-tab-pane label="Upload file" name="file"></el-tab-pane>
@@ -53,7 +65,8 @@ const props = defineProps(["id"]);
 const emits = defineEmits(["close"]);
 const dashboardListData = computed(() => store.getDashboardItemList);
 const activeTabName = ref("manual");
-const statisticValue= ref('');
+const statisticValue = ref("");
+const incremented= ref(false);
 
 const onClose = () => {
   emits("close");
@@ -68,7 +81,7 @@ const populateDefaultData = () => {
   );
   console.log(dashboardList);
   title.value = dashboardList[0].title || "";
-  statisticValue.value= dashboardList[0].value || 0;
+  statisticValue.value = dashboardList[0].value || 0;
 };
 
 const handleDataOptionChange = (tab) => {
