@@ -1,4 +1,4 @@
-export const Item = {
+export const BarItem = {
   id: "",
   name: "",
   title: "",
@@ -16,9 +16,9 @@ export const Item = {
       plotOptions: {
         bar: {
           borderRadius: 2,
-          borderRadiusApplication: 'end',
-          horizontal: '',
-        }
+          borderRadiusApplication: "end",
+          horizontal: "",
+        },
       },
       xaxis: {
         categories: [],
@@ -26,4 +26,27 @@ export const Item = {
     },
     series: [],
   },
+};
+
+export const StatisticItem = {
+  id: "",
+  name: "",
+  title: "",
+  type: "",
+  value:'',
+  description:'',
+  w: 250,
+  h: 250,
+};
+
+
+export const TableItem = {
+  id: "",
+  name: "",
+  title: "",
+  type: "",
+  value:'',
+  description:'',
+  w: 650,
+  h: 350,
 };
