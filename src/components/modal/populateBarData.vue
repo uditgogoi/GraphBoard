@@ -80,8 +80,8 @@
               </el-row>
               <el-row class="add-series-btn">
                 <el-col :span="12">
-                  <el-button type="primary" @click="onAddNewSeries"
-                    >Save series</el-button
+                  <el-button type="primary" plain @click="onAddNewSeries"
+                    >Add</el-button
                   >
                 </el-col>
               </el-row>

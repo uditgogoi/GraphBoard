@@ -1,6 +1,6 @@
 <template>
   <div class="statistic-card">
-    <el-statistic :value="data.value">
+    <el-statistic :value="data.itemData.value">
       <template #title>
         <div style="display: inline-flex; align-items: center">
           {{ data.itemData.description }}
@@ -8,6 +8,7 @@
             effect="dark"
             :content="data.itemData.infoText"
             placement="top"
+            v-if="data.itemData.infoText"
           >
             <el-icon style="margin-left: 4px" :size="12">
               <Warning />
@@ -18,11 +19,12 @@
     </el-statistic>
     <div class="statistic-footer">
       <div class="footer-item">
-        <span>{{ data.itemData.suffixText }}</span>
-        <span class="green">
+        <span v-if="data.itemData.suffixText ">{{ data.itemData.suffixText }}</span>
+        <span :class="[data.itemData.trendIncrement?'green':'red']" v-if="data.itemData.trendValue">
           {{  data.itemData.trendValue}}{{ data.itemData.trendType }}
           <el-icon>
-            <CaretTop />
+            <CaretTop v-if="data.itemData.trendIncrement"/>
+            <CaretBottom v-else/>
           </el-icon>
         </span>
       </div>

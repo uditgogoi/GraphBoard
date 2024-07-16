@@ -30,11 +30,10 @@ export const BarItem = {
 
 export const StatisticItem = {
   id: "",
-  name: "",
   title: "",
   type: "",
-  value:'0',
   itemData:{
+    value:0,
     description:'Daily active users',
     suffixText:"than yesterday",
     trendValue:'24',
