@@ -6,6 +6,8 @@ export const BarItem = {
   section: "",
   w: 300,
   h: 250,
+  x:'',
+  y:'',
   metaData: {},
   itemData: {
     options: {
