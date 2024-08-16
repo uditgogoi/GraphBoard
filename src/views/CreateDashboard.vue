@@ -80,6 +80,7 @@ const addTable = () => {
   newComponent.title = `Demo Table`;
   newComponent.name = `Table`;
   newComponent.type = `table`;
+  newComponent.itemData=[],
   store.setNewDashboardItems([...components.value, newComponent]);
 };
 </script>

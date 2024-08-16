@@ -41,7 +41,6 @@
             </el-dropdown>
           </div>
         </template>
-
         <component
           :key="props.component.id"
           :is="getComponentName"
@@ -69,6 +68,7 @@ import PopulateBarData from "./modal/populateBarData.vue";
 import { useGraphStore } from "../store";
 import { uniqueID } from "../utils/helper";
 import PopulateStatisticData from "./modal/PopulateStatisticData.vue";
+import PopulateTableData from "./modal/PopulateTableData.vue";
 
 const props = defineProps(["component"]);
 const store = useGraphStore();
@@ -106,7 +106,6 @@ const fetchGraphData = async () => {
 const handleCommand = (e) => {
   if (e === "populate") {
     showAddNewData.value = true;
-    console.log(props.component);
     popupComponent.value = getPopupComponent();
   } else if (e === "edit") {
     // current
@@ -128,6 +127,10 @@ const getPopupComponent = () => {
   if (props.component.subType === "simple-statistic") {
     return PopulateStatisticData;
   }
+  if(props.component.type==='table') {
+    return PopulateTableData;
+  }
+  console.log(props.component)
 };
 
 const onClose = () => {

@@ -116,7 +116,7 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="Upload File" name="file">
-            <FileUpload @upload="onUploadFile" />
+            <FileUpload @upload="onUploadFile" :files="allowedFiles"/>
           </el-tab-pane>
           <el-tab-pane label="Add Api" name="api">
             <div class="api-input">
@@ -159,6 +159,7 @@ const horizontalValue = ref({});
 const activeTabName = ref("manual");
 const newSeriesData = ref([]);
 const dashboardListData = computed(() => store.getDashboardItemList);
+const allowedFiles= ref(['.csv', '.xls', '.xlsx', 'text/csv', 'application/csv'])
 const barGraphData = computed(
   () => store.getDashboardItemList.find((item) => item.id === props.id) || {}
 );
