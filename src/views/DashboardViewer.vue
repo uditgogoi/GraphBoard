@@ -2,8 +2,9 @@
   <div class="dashboard-viewer">
     <h2>
       <el-space wrap>
-        <el-button link type="primary" @click="onClickBack">
+        <el-button round type="primary" @click="onClickBack">
           <el-icon><Back /></el-icon>
+          Back
         </el-button>
         <span>{{ dashboardData.title }}</span>
       </el-space>

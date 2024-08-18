@@ -10,6 +10,22 @@
       >
         <el-card style="width: 400px" shadow="always" class="dashboard-card">
           <div class="options">
+            <el-button type="info" link>
+              <el-icon><CloseBold /></el-icon>
+            </el-button>
+          </div>
+          <p class="dashboard-title">
+            <span>{{ dashboard.title }}</span>
+            <el-button
+              type="primary"
+              round
+              @click="onShowDashboardViewer(dashboard.dashboardId)"
+            >
+              View
+              <el-icon class="el-icon--right"><Right /></el-icon>
+            </el-button>
+          </p>
+          <!-- <div class="options">
             <el-button type="info" link
               >
               <el-icon><CloseBold /></el-icon>
@@ -19,7 +35,7 @@
           <el-button type="primary" plain @click="onShowDashboardViewer(dashboard.dashboardId)"
             >Show
             <el-icon class="el-icon--right"><Right /></el-icon>
-          </el-button>
+          </el-button> -->
         </el-card>
       </el-col>
     </el-row>
@@ -28,7 +44,7 @@
 <script setup>
 import { onMounted, computed, ref } from "vue";
 import { useRouter } from "vue-router";
-
+import { Right } from "@element-plus/icons-vue";
 const dashboardList = ref([]);
 const loading = ref(true);
 const router = useRouter();
@@ -44,12 +60,12 @@ const fetchDashboardList = () => {
   }
   dashboardList.value = dashboards;
 
-//   console.log("=====",store.getDashboardItemList)
+  //   console.log("=====",store.getDashboardItemList)
   loading.value = false;
 };
-const onShowDashboardViewer=(id)=> {
-    router.push({name:'Dashboard-viewer', params:{id:id}});
-}
+const onShowDashboardViewer = (id) => {
+  router.push({ name: "Dashboard-viewer", params: { id: id } });
+};
 </script>
 <style scoped>
 .dashboard-list {
@@ -71,5 +87,10 @@ const onShowDashboardViewer=(id)=> {
 }
 .dashboard-card > * {
   padding: 0.8rem !important;
+}
+.dashboard-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>
