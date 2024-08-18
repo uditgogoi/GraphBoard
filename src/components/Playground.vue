@@ -21,7 +21,7 @@ const componentsList = computed(() => store.getDashboardItemList);
   width: 95%;
   min-height: 100vh;
   height: auto;
-  margin: auto;
+  /* margin: auto; */
   padding: 1rem;
   margin-top: 1rem;
   overflow-y: scroll;

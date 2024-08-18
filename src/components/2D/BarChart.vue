@@ -11,6 +11,10 @@ import { useGraphStore } from "../../store";
 
 const store = useGraphStore();
 const props = defineProps(["id","ready"]);
+onMounted(()=> {
+  console.log(store.getDashboardItemList)
+  console.log(props.id)
+})
 const chartOptions = computed(
   () =>
     store.getDashboardItemList.find((item) => item.id === props.id)?.itemData

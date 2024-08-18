@@ -13,4 +13,11 @@ export const LeftNavigationMenu=[
         route:'/dashboard/create',
         icon: PieChart
     },
+    {
+        id:'create',
+        title:'Create 3D Dashboard',
+        route:'/dashboard/3d/create',
+        icon: PieChart,
+        disable:true
+    },
 ]

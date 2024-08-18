@@ -66,3 +66,8 @@ const columns = computed(() => {
 //   },
 // ];
 </script>
+<style scoped>
+#table {
+  padding: 0.5rem;
+}
+</style>
