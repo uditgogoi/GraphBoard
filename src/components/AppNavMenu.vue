@@ -3,12 +3,8 @@
     <el-col :span="24">
       <el-row class="brand-title">
         <el-col :span="24" class="flex align-center pa-2">
-          <img
-            src="../assets/logo-1.png"
-            alt="logo"
-            width="200"
-          />
-            
+          <img src="../assets/logo-1.png" alt="logo" width="200" />
+
           <!-- <h3>GraphBoards</h3> -->
         </el-col>
       </el-row>
@@ -18,6 +14,7 @@
         @close="handleClose"
         background-color="#545c64"
         text-color="#fff"
+        active-text-color="#ffd04b"
         :default-active="checkDefaultActive()"
       >
         <el-menu-item
@@ -60,7 +57,7 @@ const checkDefaultActive = () => {
     
 <style scoped>
 .nav-menu {
-  height: 89vh;
+  height: 100vh;
 }
 .brand-title {
   background: #545c64;

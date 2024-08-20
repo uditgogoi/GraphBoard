@@ -3,10 +3,7 @@
     <el-upload
       class="upload-demo"
       drag
-      accept=".csv, .xls, .xlsx, text/csv, application/csv,
-text/comma-separated-values, application/csv, application/excel,
-application/vnd.msexcel, text/anytext, application/vnd. ms-excel,
-application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      :accept="allowedFiles"
       :http-request="handleUpload"
       :before-upload="beforeUpload"
       :on-remove="handleRemove"
@@ -25,15 +22,24 @@ application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 import { UploadFilled } from "@element-plus/icons-vue";
 import * as XLSX from "xlsx";
 import Papa from "papaparse";
-import { ref } from "vue";
+import { ref,onMounted } from "vue";
 
 const fileList = ref([]);
 const parsedData = ref([]);
+const props= defineProps(['files'])
 const emits = defineEmits(["upload"]);
+const allowedFiles=ref('');
 
 const onUploadSuccess = (e) => {
   console.log(e);
 };
+
+
+onMounted(()=> {
+  console.log(props.files)
+  allowedFiles.value= props.files.join(", ")
+})
+
 const handleUpload = ({ file }) => {
   fileList.value.push(file);
   const reader = new FileReader();
@@ -86,6 +92,7 @@ const parseExcel = (data) => {
   const jsonData = XLSX.utils.sheet_to_json(worksheet);
   return jsonData;
 };
+
 const parseCSV = (data) => {
   Papa.parse(data, {
     complete: (results) => {
@@ -95,6 +102,7 @@ const parseCSV = (data) => {
     header: false,
   });
 };
+
 const handleRemove = (file, fileList) => {
   fileList.value = fileList;
   parsedData.value = [];
@@ -102,3 +110,9 @@ const handleRemove = (file, fileList) => {
   // ElMessage.success(`File ${file.name} removed successfully`);
 };
 </script>
+
+<!-- 
+.csv, .xls, .xlsx, text/csv, application/csv,
+text/comma-separated-values, application/csv, application/excel,
+application/vnd.msexcel, text/anytext, application/vnd. ms-excel,
+application/vnd.openxmlformats-officedocument.spreadsheetml.sheet -->

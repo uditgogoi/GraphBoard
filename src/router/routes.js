@@ -1,3 +1,4 @@
+import component from 'element-plus/es/components/tree-select/src/tree-select-option.mjs'
 import Dashboard from '../views/Dashboard.vue'
 export const routes= [
     {
@@ -26,10 +27,16 @@ export const routes= [
                 component:()=> import('../views/Home.vue'),
             },
             {
+                path:'viewer/:id',
+                name:'Dashboard-viewer',
+                component:()=> import('../views/DashboardViewer.vue')
+            },
+            {
                 path:'create',
                 name:'CreateDashboard',
                 component:()=> import('../views/CreateDashboard.vue'), 
-            }
+            },
+            
          ]
     },
 ]

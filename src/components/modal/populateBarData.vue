@@ -74,14 +74,14 @@
                     placeholder="Enter Series Data"
                   />
                 </el-col>
-                <el-col :span="2" :offset="1">
+                <!-- <el-col :span="2" :offset="1">
                   <el-button type="danger" :icon="Close" circle />
-                </el-col>
+                </el-col> -->
               </el-row>
               <el-row class="add-series-btn">
                 <el-col :span="12">
-                  <el-button type="primary" @click="onAddNewSeries"
-                    >Save series</el-button
+                  <el-button type="primary" plain @click="onAddNewSeries"
+                    >Add</el-button
                   >
                 </el-col>
               </el-row>
@@ -115,8 +115,8 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="Add File" name="file">
-            <FileUpload @upload="onUploadFile" />
+          <el-tab-pane label="Upload File" name="file">
+            <FileUpload @upload="onUploadFile" :files="allowedFiles"/>
           </el-tab-pane>
           <el-tab-pane label="Add Api" name="api">
             <div class="api-input">
@@ -139,11 +139,12 @@
 <script setup>
 import { ElMessage } from "element-plus";
 import { computed, onMounted, ref } from "vue";
-const dialogTableVisible = ref(true);
 import { useGraphStore } from "../../store";
 import { Close, EditPen, DeleteFilled } from "@element-plus/icons-vue";
 import { uniqueID } from "../../utils/helper";
 import FileUpload from "../../components/FileUpload.vue";
+
+const dialogTableVisible = ref(true);
 const emits = defineEmits(["close"]);
 const onClose = () => {
   emits("close");
@@ -158,6 +159,7 @@ const horizontalValue = ref({});
 const activeTabName = ref("manual");
 const newSeriesData = ref([]);
 const dashboardListData = computed(() => store.getDashboardItemList);
+const allowedFiles= ref(['.csv', '.xls', '.xlsx', 'text/csv', 'application/csv'])
 const barGraphData = computed(
   () => store.getDashboardItemList.find((item) => item.id === props.id) || {}
 );
@@ -339,40 +341,5 @@ const enterDataFromFile = (xAxis, yAxisValues) => {
 };
 </script>
 <style scoped>
-.left-col {
-  border-right: 1px solid rgba(208, 208, 208, 0.7);
-}
-.right-col {
-  padding: 0 1rem;
-}
-.row {
-  padding: 0.5rem;
-}
-.fields {
-  margin-top: 0.8rem;
-}
-.action {
-  margin-top: 1rem;
-}
-.text-center {
-  text-align: center;
-}
-.add-series-btn {
-  margin-top: 1rem;
-}
-.series-data {
-  margin-top: 1rem;
-}
-.series-list {
-  padding: 0.2rem 2rem;
-  margin-top: 0.5rem;
-  display: flex;
-  align-items: center;
-}
-.series-list:nth-child(even) {
-  background: #e3e3e2;
-}
-.api-input {
-  margin-top: 1rem;
-}
+
 </style>
