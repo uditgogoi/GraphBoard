@@ -1,21 +1,23 @@
 <template>
   <el-row class="tac mb-5">
     <el-col :span="24">
-      <el-row>
+      <el-row class="brand-title">
         <el-col :span="24" class="flex align-center pa-2">
           <img
-            src="https://seeklogo.com/images/A/atomic-logo-42027187FA-seeklogo.com.png"
-            alt=""
-            width="30"
+            src="../assets/logo-1.png"
+            alt="logo"
+            width="200"
           />
-            &nbsp; &nbsp;
-          <h3>GraphBoards</h3>
+            
+          <!-- <h3>GraphBoards</h3> -->
         </el-col>
       </el-row>
       <el-menu
         class="el-menu-vertical-demo nav-menu"
         @open="handleOpen"
         @close="handleClose"
+        background-color="#545c64"
+        text-color="#fff"
         :default-active="checkDefaultActive()"
       >
         <el-menu-item
@@ -59,5 +61,9 @@ const checkDefaultActive = () => {
 <style scoped>
 .nav-menu {
   height: 89vh;
+}
+.brand-title {
+  background: #545c64;
+  color: #fff;
 }
 </style>
