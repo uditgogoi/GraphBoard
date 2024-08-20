@@ -17,6 +17,7 @@
         active-text-color="#ffd04b"
         :default-active="checkDefaultActive()"
       >
+
         <el-menu-item
           :index="index"
           v-for="(option, index) in leftNavigationMenu"
@@ -63,4 +64,6 @@ const checkDefaultActive = () => {
   background: #545c64;
   color: #fff;
 }
+
+
 </style>

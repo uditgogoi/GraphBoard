@@ -4,6 +4,8 @@
       <AppNavMenu />
     </el-aside>
     <el-main class="pt-0">
+      <AppNavBar/>
+      <!-- <el-divider></el-divider> -->
       <el-row>
         <el-col :span="3" :offset="21" class="flex justify-end align-center">
         </el-col>
@@ -16,8 +18,8 @@
 </template>
 <script setup>
 import { ref } from "vue";
-// import { Menu as IconMenu, Message, Setting } from "@element-plus/icons-vue";
 import AppNavMenu from "@/components/AppNavMenu.vue";
+import AppNavBar from "@/components/AppNavBar.vue";
 const item = {
   date: "2016-05-02",
   name: "Tom",
@@ -36,4 +38,5 @@ const tableData = ref(Array.from({ length: 20 }).fill(item));
   width: 100vw;
   overflow: auto;
 }
+
 </style>

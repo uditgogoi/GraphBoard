@@ -1,5 +1,5 @@
-import component from 'element-plus/es/components/tree-select/src/tree-select-option.mjs'
-import Dashboard from '../views/Dashboard.vue'
+import Dashboard from '../views/Dashboard.vue';
+import Authentication from "../views/Auth/Authentication.vue";
 export const routes= [
     {
         path: '',
@@ -39,4 +39,9 @@ export const routes= [
             
          ]
     },
+    {
+        path: '/auth',
+        name:'Auth',
+        component:Authentication
+    }
 ]
