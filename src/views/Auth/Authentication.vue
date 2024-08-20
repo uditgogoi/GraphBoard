@@ -38,11 +38,12 @@
 import { onMounted, ref, computed } from "vue";
 import { useFirebaseAuth } from "vuefire";
 import { auth, googleAuthProvider } from "../../auth/firebase";
+import { useRouter } from 'vue-router';
 import {
   signInWithPopup,
 } from 'firebase/auth'
-// const email = ref("");
-// const password = ref("");
+
+const router= useRouter();
 const error= ref('');
 // const { currentUser } = useFirebaseAuth();
 // const user = computed(() => currentUser.value);
@@ -50,6 +51,7 @@ const error= ref('');
 const signInWithGoogle = async () => {
   try {
     await signInWithPopup(auth, googleAuthProvider);
+    router.push('/')
   } catch (error) {
     console.error("Google sign-in error:", error);
     error.value = error

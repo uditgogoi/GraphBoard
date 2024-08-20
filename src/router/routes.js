@@ -37,7 +37,8 @@ export const routes= [
                 component:()=> import('../views/CreateDashboard.vue'), 
             },
             
-         ]
+         ],
+         meta: { requiresAuth: true },
     },
     {
         path: '/auth',
