@@ -1,13 +1,14 @@
 <template>
   <div class="dashboard-viewer">
+    <div>
+      <el-button round type="primary" @click="onClickBack">
+        <el-icon><Back /></el-icon>
+        Back
+      </el-button>
+    </div>
+
     <h2>
-      <el-space wrap>
-        <el-button round type="primary" @click="onClickBack">
-          <el-icon><Back /></el-icon>
-          Back
-        </el-button>
-        <span>{{ dashboardData.title }}</span>
-      </el-space>
+      {{ dashboardData.title }}
     </h2>
     <div v-for="component in components" :key="component.id" class="block">
       <Vue3DraggableResizable
@@ -19,7 +20,6 @@
         v-model:h="component.h"
         :draggable="false"
         :resizable="false"
-       
       >
         <el-card shadow="never" class="component-wrapper">
           <h3 class="heading">{{ component.title }}</h3>
