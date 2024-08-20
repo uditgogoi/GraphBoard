@@ -36,8 +36,6 @@ export const useGraphStore = defineStore("graph", {
     setNewDashboardItems(value) {
       this.newDashboardItems = value;
     },
-    setBarChart(value) {
-      this.barChart = value;
-    },
+    
   },
 });
