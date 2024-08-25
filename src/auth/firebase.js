@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
-import { getAuth,GoogleAuthProvider } from "firebase/auth";
+import { getAuth,GoogleAuthProvider,onAuthStateChanged } from "firebase/auth";
 import { getFirestore, collection } from "firebase/firestore";
+import { useGraphStore } from "../store";
+import {useRouter} from 'vue-router';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -13,10 +15,9 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_MEASUREMENT_ID,
 };
 
-console.log(import.meta.env.VITE_API_KEY)
 // Initialize Firebase
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
 const googleAuthProvider= new GoogleAuthProvider();
-export { firebaseApp,googleAuthProvider,db,auth };
+export { firebaseApp,googleAuthProvider,db,auth,onAuthStateChanged };

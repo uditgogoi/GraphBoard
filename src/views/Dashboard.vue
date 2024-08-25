@@ -5,7 +5,6 @@
     </el-aside>
     <el-main class="pt-0">
       <AppNavBar/>
-      <!-- <el-divider></el-divider> -->
       <el-row>
         <el-col :span="3" :offset="21" class="flex justify-end align-center">
         </el-col>
@@ -17,15 +16,8 @@
   </el-container>
 </template>
 <script setup>
-import { ref } from "vue";
 import AppNavMenu from "@/components/AppNavMenu.vue";
 import AppNavBar from "@/components/AppNavBar.vue";
-const item = {
-  date: "2016-05-02",
-  name: "Tom",
-  address: "No. 189, Grove St, Los Angeles",
-};
-const tableData = ref(Array.from({ length: 20 }).fill(item));
 </script>
 
 <style scoped>

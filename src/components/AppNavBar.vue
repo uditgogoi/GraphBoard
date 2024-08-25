@@ -1,11 +1,10 @@
 <template>
   <div class="navbar">
     <el-dropdown>
-      <span class="el-dropdown-link">
-        <el-button plain circle type="primary">
-          <el-icon><User /></el-icon>
-        </el-button>
-      </span>
+      <el-button :size="50" plain circle type="primary">
+        <el-avatar :src="profilePic" v-if="profilePic" />
+        <el-icon v-else><User /></el-icon>
+      </el-button>
       <template #dropdown>
         <el-dropdown-menu>
           <el-dropdown-item disabled>Profile</el-dropdown-item>
@@ -16,22 +15,25 @@
   </div>
 </template>
 <script setup>
-import {
-  auth,
-} from '../auth/firebase';
-import { useRouter } from 'vue-router';
+import { auth } from "../auth/firebase";
+import { useRouter } from "vue-router";
+import { useGraphStore } from "../store";
+import { computed, onMounted } from "vue";
 
-const router= useRouter();
+const store = useGraphStore();
+const router = useRouter();
+const profilePic = computed(() => store.getUserData?.profilePicture || "");
 
-const onLogout=async()=> {
+const onLogout = async () => {
   try {
     await auth.signOut();
-    router.push('/auth')
+    // store.setUserLogInStatus(false);
+    router.push("/auth");
   } catch (error) {
     console.error("Google sign-in error:", error);
-    error.value = error
+    error.value = error;
   }
-}
+};
 </script>
 <style scoped>
 .navbar {
