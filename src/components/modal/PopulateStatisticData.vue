@@ -114,7 +114,15 @@
               </div>
             </el-tab-pane>
             <!-- <el-tab-pane label="Upload file" name="file"></el-tab-pane> -->
-            <el-tab-pane label="Add Api" name="api"></el-tab-pane>
+            <el-tab-pane label="Add Api" name="api">
+              <label>Add Api: </label>
+              <el-input
+                v-model="input"
+                style="width: 80%"
+                placeholder="Please input (Under development)"
+                disabled
+              />
+            </el-tab-pane>
           </el-tabs>
         </el-col>
       </el-row>
@@ -140,8 +148,8 @@ const incremented = ref(false);
 const trendValue = ref(0);
 const description = ref("");
 const suffix = ref("");
-const trendType= ref('%')
-const infoText= ref("");
+const trendType = ref("%");
+const infoText = ref("");
 const onClose = () => {
   emits("close");
 };
@@ -155,13 +163,13 @@ const populateDefaultData = () => {
   );
   title.value = dashboardList.title || "";
   statisticValue.value = dashboardList.itemData.value || 0;
-  incremented.value= dashboardList.itemData.trendIncrement;
-  description.value= dashboardList.itemData.description;
-  suffix.value=dashboardList.itemData.suffixText;
-  trendValue.value=dashboardList.itemData.trendValue;
-  incremented.value=dashboardList.itemData.trendIncrement;
-  infoText.value=dashboardList.itemData.trendIncrement;
-  trendType.value=dashboardList.itemData.trendType;
+  incremented.value = dashboardList.itemData.trendIncrement;
+  description.value = dashboardList.itemData.description;
+  suffix.value = dashboardList.itemData.suffixText;
+  trendValue.value = dashboardList.itemData.trendValue;
+  incremented.value = dashboardList.itemData.trendIncrement;
+  infoText.value = dashboardList.itemData.trendIncrement;
+  trendType.value = dashboardList.itemData.trendType;
 };
 
 const handleDataOptionChange = (tab) => {
@@ -177,7 +185,7 @@ const onSubmit = () => {
       dashboardList[i].itemData.value = statisticValue.value;
       dashboardList[i].itemData.suffixText = suffix.value;
       dashboardList[i].itemData.trendValue = trendValue.value;
-      dashboardList[i].itemData.trendType = trendType.value?"":"%";
+      dashboardList[i].itemData.trendType = trendType.value ? "" : "%";
       dashboardList[i].itemData.trendIncrement = incremented.value;
       dashboardList[i].itemData.infoText = infoText.value;
     }

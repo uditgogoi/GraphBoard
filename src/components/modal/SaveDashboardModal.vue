@@ -26,7 +26,7 @@ const saveDashboardData = () => {
   if (!title.value) {
     ElMessage({
       message: "Title is invalid",
-      type: 'error',
+      type: 'danger',
     });
     return;
   }

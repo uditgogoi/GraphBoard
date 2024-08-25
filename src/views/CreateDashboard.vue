@@ -55,15 +55,17 @@
 import { computed, ref } from "vue";
 import Playground from "../components/Playground.vue";
 import { uniqueID } from "../utils/helper";
-import { BarItem, StatisticItem, TableItem } from "../Model/Item";
+import { BarItem, StatisticItem, TableItem } from "../model/Item";
 import SaveDashboardModal from "../components/modal/SaveDashboardModal.vue";
 import { useGraphStore } from "../store";
 import { ElMessage } from "element-plus";
+import { useRouter} from 'vue-router';
 
 const components = computed(() => store.getDashboardItemList);
 const store = useGraphStore();
 const showSaveDashboard = ref(false);
 const dashboardListData = computed(() => store.getDashboardItemList);
+const router= useRouter();
 
 const handleSelect = (e) => {
   if (e === "box") {
@@ -96,7 +98,7 @@ const addBox = () => {
   const newComponent = JSON.parse(JSON.stringify(StatisticItem));
   newComponent.id = uniqueID();
   newComponent.title = `Demo Statistic`;
-  newComponent.name = `Number`;
+  newComponent.name = `Statistic`;
   newComponent.type = `statistic`;
   newComponent.subType = `simple-statistic`;
   store.setNewDashboardItems([...components.value, newComponent]);
@@ -140,6 +142,12 @@ const onSubmitDashboard = (value) => {
   }
   localStorage.setItem("dashboards", JSON.stringify(dashboards));
   showSaveDashboard.value = false;
+  store.setNewDashboardItems([]);
+  notification({
+      msg:'Dashboard successfully saved',
+      type:'success'
+    })
+  
 };
 
 const notification = (notice) => {
@@ -159,4 +167,4 @@ const notification = (notice) => {
 .el-menu--horizontal.el-menu {
   border-bottom: none;
 }
-</style>
+</style>../model/Item

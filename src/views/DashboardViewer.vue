@@ -6,7 +6,6 @@
         Back
       </el-button>
     </div>
-
     <h2>
       {{ dashboardData.title }}
     </h2>
@@ -20,6 +19,7 @@
         v-model:h="component.h"
         :draggable="false"
         :resizable="false"
+        class="components"
       >
         <el-card shadow="never" class="component-wrapper">
           <h3 class="heading">{{ component.title }}</h3>
@@ -68,14 +68,14 @@ const fetchDashboard = () => {
 
 const getComponentName = (name) => {
   let component;
-  switch (name) {
-    case "BarChart":
+  switch (name.toLowerCase()) {
+    case "barchart":
       component = BarChart;
       break;
-    case "StatisticCard":
+    case "statistic":
       component = StatisticCard;
       break;
-    case "Table":
+    case "table":
       component = Table;
       break;
     default:
@@ -91,6 +91,9 @@ const onClickBack = () => {
 <style scoped>
 .block {
   position: relative;
+}
+.components {
+  position: absolute;
 }
 .container {
   border: 1px solid rgb(235, 235, 235);

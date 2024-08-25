@@ -124,7 +124,8 @@
               <el-input
                 v-model="input"
                 style="width: 80%"
-                placeholder="Please input"
+                placeholder="Please input (Under development)"
+                disabled
               />
             </div>
           </el-tab-pane>

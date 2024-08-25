@@ -30,8 +30,16 @@
               </el-col>
             </el-row>
           </el-tab-pane>
-          <el-tab-pane label="Add Api" name="api"></el-tab-pane>
-          <el-tab-pane label="Add manually" name="manual"></el-tab-pane>
+          <el-tab-pane label="Add Api" name="api">
+            <label>Add Api: </label>
+              <el-input
+                v-model="input"
+                style="width: 80%"
+                placeholder="Please input (Under development)"
+                disabled
+              />
+          </el-tab-pane>
+          <!-- <el-tab-pane label="Add manually" name="manual"></el-tab-pane> -->
         </el-tabs>
       </el-col>
     </el-row>

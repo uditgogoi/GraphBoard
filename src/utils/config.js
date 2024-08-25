@@ -4,7 +4,7 @@ export const LeftNavigationMenu=[
     {
         id:'home',
         title:"Home",
-        route:'/dashboard/home',
+        route:'/',
         icon: HomeFilled
     },
     {
