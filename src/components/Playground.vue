@@ -1,6 +1,6 @@
 <template>
   <div class="playground">
-    <div v-if="componentsList.length>0">
+    <div v-if="componentsList && componentsList.length>0">
       <div v-for="component in componentsList" :key="component.id">
         <Draggable :component="component" :key="component.id"/>
       </div>
