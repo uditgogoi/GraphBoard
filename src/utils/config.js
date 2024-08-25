@@ -3,7 +3,7 @@ import {HomeFilled,PieChart} from '@element-plus/icons-vue';
 export const LeftNavigationMenu=[
     {
         id:'home',
-        title:"Home",
+        title:"Dashboard list",
         route:'/',
         icon: HomeFilled
     },

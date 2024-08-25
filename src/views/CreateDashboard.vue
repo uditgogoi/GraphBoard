@@ -52,20 +52,22 @@
   </div>
 </template>
 <script setup>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import Playground from "../components/Playground.vue";
 import { uniqueID } from "../utils/helper";
 import { BarItem, StatisticItem, TableItem } from "../model/Item";
 import SaveDashboardModal from "../components/modal/SaveDashboardModal.vue";
 import { useGraphStore } from "../store";
 import { ElMessage } from "element-plus";
-import { useRouter} from 'vue-router';
 
 const components = computed(() => store.getDashboardItemList);
 const store = useGraphStore();
 const showSaveDashboard = ref(false);
 const dashboardListData = computed(() => store.getDashboardItemList);
-const router= useRouter();
+
+onMounted(()=> {
+  store.setNewDashboardItems([])
+})
 
 const handleSelect = (e) => {
   if (e === "box") {
