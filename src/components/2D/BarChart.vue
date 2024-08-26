@@ -23,9 +23,9 @@ const chartOptions = computed(
 const data = computed(
   () =>
     store.getDashboardItemList.find((item) => item.id === props.id)?.itemData
-      .series
+      .series || []
 );
-const xAxisLabels= computed(()=> chartOptions.value.xaxis.categories)
+const xAxisLabels= computed(()=> chartOptions.value?.xaxis?.categories || 0)
 </script>
 <style scoped>
 .barchart-wrapper {

@@ -1,69 +1,68 @@
 <template>
-  <div class="auth-container">
-    <img src="../../assets/logo-1.png" alt="Logo" class="logo" />
-    <main class="auth-form">
-      <!-- <form>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            v-model="email"
-            required
-            placeholder="Enter your email"
+  <div class="landing">
+    <div class="auth-container">
+      <div class="landing-nav">
+        <img src="../../assets/logo-1.png" alt="Logo" class="logo" />
+        <a
+          href="https://github.com/uditgogoi/GraphBoard"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+            alt="GitHub"
+            width="35"
+            height="35"
           />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            v-model="password"
-            required
-            placeholder="Enter your password"
-          />
-        </div>
-      </form> -->
-      <!-- <el-button type="primary" class="btn" @click="signInWithGoogle"
-        >Sign in with Google</el-button
-      > -->
-      <button class="gsi-material-button btn" @click="signInWithGoogle">
-        <div class="gsi-material-button-state"></div>
-        <div class="gsi-material-button-content-wrapper">
-          <div class="gsi-material-button-icon">
-            <svg
-              version="1.1"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 48 48"
-              xmlns:xlink="http://www.w3.org/1999/xlink"
-              style="display: block"
+        </a>
+      </div>
+      <h1 class="landing-header">Create dashboards using drag and drop</h1>
+      <p class="landing-para">
+        Using drag and drop, create charts, tables, stastics etc. and club them
+        together to create dashboards. Create multiple dashboards which supports
+        multiple data sources.
+      </p>
+      <main class="auth-form">
+        <button class="gsi-material-button btn" @click="signInWithGoogle">
+          <div class="gsi-material-button-state"></div>
+          <div class="gsi-material-button-content-wrapper">
+            <div class="gsi-material-button-icon">
+              <svg
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 48 48"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                style="display: block"
+              >
+                <path
+                  fill="#EA4335"
+                  d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+                ></path>
+                <path
+                  fill="#4285F4"
+                  d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                ></path>
+                <path
+                  fill="#FBBC05"
+                  d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                ></path>
+                <path
+                  fill="#34A853"
+                  d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                ></path>
+                <path fill="none" d="M0 0h48v48H0z"></path>
+              </svg>
+            </div>
+            <span class="gsi-material-button-contents"
+              >Sign in with Google</span
             >
-              <path
-                fill="#EA4335"
-                d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
-              ></path>
-              <path
-                fill="#4285F4"
-                d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
-              ></path>
-              <path
-                fill="#FBBC05"
-                d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
-              ></path>
-              <path
-                fill="#34A853"
-                d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
-              ></path>
-              <path fill="none" d="M0 0h48v48H0z"></path>
-            </svg>
+            <span style="display: none">Sign in with Google</span>
           </div>
-          <span class="gsi-material-button-contents">Sign in with Google</span>
-          <span style="display: none">Sign in with Google</span>
-        </div>
-      </button>
-    </main>
-    <div v-if="error">
-      <el-text class="mx-1" type="danger">{{ error }}</el-text>
+        </button>
+      </main>
+      <div v-if="error">
+        <el-text class="mx-1" type="danger">{{ error }}</el-text>
+      </div>
     </div>
   </div>
 </template>
@@ -73,10 +72,10 @@ import { ref, computed } from "vue";
 import { auth, googleAuthProvider } from "../../auth/firebase";
 import { useRouter } from "vue-router";
 import { signInWithPopup } from "firebase/auth";
-import {storeUserProfile} from '../../services/DbQueries';
-import {useGraphStore} from '../../store'; 
+import { storeUserProfile } from "../../services/DbQueries";
+import { useGraphStore } from "../../store";
 
-const store=useGraphStore();
+const store = useGraphStore();
 const router = useRouter();
 const error = ref("");
 // const { currentUser } = useFirebaseAuth();
@@ -86,10 +85,10 @@ const signInWithGoogle = async () => {
   try {
     const userData = await signInWithPopup(auth, googleAuthProvider);
     const user = userData.user;
-    const result=await storeUserProfile(user);
-    console.log("result",result);
+    const result = await storeUserProfile(user);
+    console.log("result", result);
     const { success, ...newObj } = result;
-    if(success) { 
+    if (success) {
       store.setUserdata(newObj);
     }
     router.push("/");
@@ -98,19 +97,39 @@ const signInWithGoogle = async () => {
     error.value = error;
   }
 };
-
-
 </script>
   
 <style scoped>
-.auth-container {
+.landing:before {
+  content: " ";
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'%3E%3Cdefs%3E%3ClinearGradient id='a' x1='0' x2='0' y1='1' y2='0' gradientTransform='rotate(74,0.5,0.5)'%3E%3Cstop offset='0' stop-color='%232F7FE0'/%3E%3Cstop offset='1' stop-color='%2349B74B'/%3E%3C/linearGradient%3E%3ClinearGradient id='b' x1='0' x2='0' y1='0' y2='1' gradientTransform='rotate(250,0.5,0.5)'%3E%3Cstop offset='0' stop-color='%23F8F806'/%3E%3Cstop offset='1' stop-color='%233E96FF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='%23FFF' fill-opacity='0' stroke-miterlimit='10'%3E%3Cg stroke='url(%23a)' stroke-width='3.3'%3E%3Cpath transform='translate(-4.9 -2.8) rotate(-2.8 1409 581) scale(0.979)' d='M1409 581 1450.35 511 1490 581z'/%3E%3Ccircle stroke-width='1.1' transform='translate(-17.5 7) rotate(-1.4 800 450) scale(0.997)' cx='500' cy='100' r='40'/%3E%3Cpath transform='translate(-4.9 10.5) rotate(-17.5 401 736) scale(0.997)' d='M400.86 735.5h-83.73c0-23.12 18.74-41.87 41.87-41.87S400.86 712.38 400.86 735.5z'/%3E%3C/g%3E%3Cg stroke='url(%23b)' stroke-width='1'%3E%3Cpath transform='translate(42 4.2) rotate(-1.05 150 345) scale(1.007)' d='M149.8 345.2 118.4 389.8 149.8 434.4 181.2 389.8z'/%3E%3Crect stroke-width='2.2' transform='translate(10.5 -21) rotate(-25.2 1089 759)' x='1039' y='709' width='100' height='100'/%3E%3Cpath transform='translate(-2.8 -2.8) rotate(-4.2 1400 132) scale(0.965)' d='M1426.8 132.4 1405.7 168.8 1363.7 168.8 1342.7 132.4 1363.7 96 1405.7 96z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-attachment: fixed;
+  background-size: cover;
+  opacity: 0.3;
+  height: 100vh;
+  width: 100vw;
+}
+.landing-nav {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.auth-container {
+  width: 70%;
+  margin: auto;
+  padding: 2rem;
+  /* display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
   background-color: #f5f5f5;
-  padding: 20px;
+  padding: 20px; */
 }
 
 .auth-header {
@@ -118,24 +137,43 @@ const signInWithGoogle = async () => {
 }
 
 .logo {
-  width: 220px;
+  width: 180px;
 }
 
 .auth-form {
-  background-color: white;
+  /* background-color: white; */
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
   width: 100%;
   max-width: 400px;
   text-align: center;
   margin-top: 1rem;
+  text-align: center;
+  width: 50%;
+  margin: auto;
 }
 
 h2 {
   margin-bottom: 20px;
   font-size: 24px;
   text-align: center;
+}
+.landing-header {
+  font-weight: 700;
+  color: #444444;
+  text-align: center;
+  width: 50%;
+  margin: auto;
+  margin-top: 10rem;
+}
+.landing-para {
+  width: 50%;
+  margin: auto;
+  margin-top: 2rem;
+  text-align: center;
+  color: #6b6b6b;
+  line-height: 2rem;
 }
 
 .form-group {
