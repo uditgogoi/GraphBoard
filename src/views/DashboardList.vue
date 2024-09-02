@@ -10,7 +10,7 @@
           :key="dashboard.dashboardId"
           class="card-col"
         >
-          <el-card style="width: 400px" shadow="always" class="dashboard-card">
+          <el-card shadow="always" class="dashboard-card">
             <div class="options">
               <el-button type="info" link>
                 <el-icon><CloseBold /></el-icon>

@@ -113,7 +113,6 @@ const signInWithGoogle = async () => {
   opacity: 0.4;
   height: 90vh;
   width: 100vw;
-  z-index: 0;
 }
 .landing-nav {
   display: flex;
